@@ -1,0 +1,85 @@
+@import './variables.scss';
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+$primary: #9e7ce2;
+$secondary: #f1ff37;
+
+// h1, .navbar-brand {
+//   font-family: 'Caveat', sans-serif;
+// }
+
+
+@import '~bootstrap/scss/bootstrap.scss';
+
+
+
+h1, .navbar-brand {
+    font-family: 'Caveat', sans-serif;
+}
+
+.logo{
+  width: 20%;
+  height: auto;
+}
+
+.navbar-brand{
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+}
+
+.image-container {
+  width: 200px; 
+  height: 200px; 
+  overflow: hidden;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.servicio{
+  width: 30%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.social{
+  width: 30px;
+  height: auto;
+  color: black;
+  margin: 0 auto;
+}
+
+
+
+.product-name{
+  text-decoration: none;
+  color: black;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rating span{
+  margin: 1px;
+}
+
+.rating svg{
+  color: #f1ff37;
+}
+
+.rating-text{
+  padding-left: 5px;
+  font-size: 15px;
+}
+
+
+
+footer {
+    background-color: rgba($primary, 1);
+    color: black;
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+}
+
+
+
