@@ -33,28 +33,28 @@ const ProductView = () => {
     <Container>
     <Row>
         <Col md={5}>
-            <Image src={product.image} alt={product.name} fluid />
+            <Image src={product.imagen} alt={product.nombre} fluid />
         </Col>
 
         <Col md={4}>
             <ListGroup variant="flush">
                 <ListGroup.Item>
-                    <h3>{product.name}</h3>
+                    <h3>{product.nombre}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
                     <Rating value={product.rating} text={`${product.numReviews} reviews`} />
                 </ListGroup.Item>
                 <ListGroup.Item>
-                    Precio: ${product.price}
+                    Precio: ${product.precio}
                 </ListGroup.Item>
                 <ListGroup.Item>
-                    Descripción: {product.description}
+                    Descripción: {product.descripcion}
                 </ListGroup.Item>
                 <ListGroup.Item>
-                    Fabricado por: {product.artist}
+                    Fabricado por: {product.creador}
                 </ListGroup.Item>
                 <ListGroup.Item>
-                    Contacto: {product.contact}
+                    Contacto: {product.contacto}
                 </ListGroup.Item>
             </ListGroup>
             <Link className ="btn btn-primary my-3" to="/">Volver</Link>
@@ -69,7 +69,7 @@ const ProductView = () => {
                                 Precio:
                             </Col>
                             <Col>
-                                <strong>${product.price}</strong>
+                                <strong>${product.precio}</strong>
                             </Col>
                         </Row>
                     </ListGroup.Item>
@@ -79,13 +79,13 @@ const ProductView = () => {
                                 Disponible:
                             </Col>
                             <Col>
-                                {product.countInStock > 0 ? 'En Stock' : 'Sin Stock'}
+                                {product.stock > 0 ? 'En Stock' : 'Sin Stock'}
                             </Col>
                         </Row>
                     </ListGroup.Item>
                     <ListGroup.Item>
                         {/* si el producto no esta disponible, o sea es 0, se deshabilita el boton */}
-                        <Button className="btn-block" type="button" disabled={product.countInStock === 0}>
+                        <Button className="btn-block" type="button" disabled={product.stock === 0}>
                             Añadir al Carrito
                         </Button>
                     </ListGroup.Item>

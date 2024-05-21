@@ -5,17 +5,28 @@ import Search from './Search';
 import Product from './Product';
 import {Nav,NavLink} from 'react-bootstrap';
 import {FaFacebook, FaInstagram} from 'react-icons/fa';
-import {useContext} from 'react';
+import {useState, useContext} from 'react';
 import {dataContext} from './context/DataContext';
 
 
 const Home = () => {
     const {data: products} = useContext(dataContext);
+    const [selectedCategory, setSelectedCategory] = useState('');
+
+    const handleCategorySelect = (category) => {
+      setSelectedCategory(category);
+    };
+
+    const filteredProducts = products.filter((product) =>
+      selectedCategory ? product.categoria === selectedCategory : true
+    );
+  
   return (
     <Container className="d-flex flex-column min-vh-100">
       <Row>
         <Col sm={12} md={6}>
-          <Search /> 
+          {/* <Search />  */}
+          <Search onCategorySelect={handleCategorySelect} />
         </Col>
         <Col sm={12} md={6} className="d-flex flex-column">
           <h1 className="py-3 text-center flex-grow-1 sm-12">
@@ -25,15 +36,22 @@ const Home = () => {
       </Row>
       <Row>
         <Col>
-            <h1 className="py-3 text-center">Novedades</h1>
+        <h1 className="py-3 text-center">
+            {selectedCategory ? selectedCategory : 'Novedades'}
+        </h1>
         <Container>
             <Row>
               {/* esto esta importado del componente Product, se recorre el array para mostrar cada producto */}
-                {products.map(product => (
+                {/* {products.map(product => (
                 <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                     <Product product={product} />
                 </Col>
-                ))}
+                ))} */}
+                {filteredProducts.map((product) => (
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <Product product={product} />
+                </Col>
+              ))}
             </Row>
         </Container>
         </Col>
@@ -100,7 +118,7 @@ const Home = () => {
         <Row>
           <Col>
             <p className="text-center">
-              Si tienes alguna duda o sugerencia, no dudes en contactarnos a través de nuestras redes sociales o a nuestro mail https://unicoydiferente@gmail.com.
+              Si tienes alguna duda o sugerencia, no dudes en contactarnos a través de nuestras redes sociales o a nuestro mail https://arteonlyne@gmail.com.
             </p>
           </Col>
         </Row>

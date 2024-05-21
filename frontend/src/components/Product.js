@@ -11,13 +11,13 @@ const Product = ({product}) => {
         {/* se especifica la ruta con el id del producto, y se muestra la foto y lo mismo con el nombre */}
         <Link to={`/product/${product._id}`}>
         <div className="image-container">
-            <Card.Img src={product.image}variant="top" className="img-fluid"/>
+            <Card.Img src={product.imagen}variant="top" className="img-fluid"/>
         </div>
         </Link>
         <Card.Body>
             <Link to ={`/product/${product._id}`} style={{ textDecoration: 'none'}}>
                 <Card.Title as="div" className="product-name">
-                    <strong>{product.name}</strong>
+                    <strong>{product.nombre}</strong>
                 </Card.Title>
             </Link>
 
@@ -26,7 +26,7 @@ const Product = ({product}) => {
                 <Rating value={product.rating} text={`${product.numReviews} reviews`} />
             </Card.Text>
             <Card.Text as="h3">
-            {`$${product.price.toLocaleString('es-ES')}`}
+            {`$${product.precio.toLocaleString('es-ES')}`}
             </Card.Text>
         </Card.Body>
     </Card>

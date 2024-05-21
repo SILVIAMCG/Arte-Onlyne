@@ -14,10 +14,16 @@ const categories = [
   {label: 'Otros' , value : 'Otros'},
 ]
 
-const Search = () => {
-    const handleSelect = ({value}) => {
-        console.log(value)
-    }
+
+// const Search = () => {
+//     const handleSelect = ({value}) => {
+//         console.log(value)
+//     }
+const Search = ({ onCategorySelect }) => {
+  const handleSelect = (selectedOption) => {
+    onCategorySelect(selectedOption ? selectedOption.value : '');
+  };
+
   return (
     <Container className="search-container py-3 sm-12">
         <Col sm={12} md={6}>
@@ -25,6 +31,7 @@ const Search = () => {
                 defaultValue={{ label: 'Categorías', value: 'Default' }}
                 onChange={handleSelect}
                 options={categories}
+                isClearable
             />
         </Col>
     </Container>

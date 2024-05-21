@@ -1,9 +1,13 @@
 import express from 'express';
-import products from './data/products.js';
 import dotenv from 'dotenv';
 dotenv.config();
+import connectDB from './config/db.js';
 const port = process.env.PORT || 5000;
+import productRoutes from './routes/productRoutes.js';
+import  {notFound, errorHandler} from './middleware/errorMw.js';
 
+//conecto la base de datos
+connectDB();
 //inicializo express
 const app = express();
 
@@ -12,16 +16,22 @@ app.get('/', (req, res) => {
   res.send('Corriendo');
 });
 
-//creo una ruta para los productos
-app.get('/api/products', (req, res) => {
-    res.json(products);
-});
+//las rutas vienen de productRoutes
+app.use('/api/products', productRoutes);
 
-//creo una ruta para un producto en particular, si el id coincide, se muestra
-app.get('/api/products/:id', (req, res) => {
-    const product = products.find((p) => p._id === req.params.id);
-    res.json(product);
-});
+//middleware para errores
+app.use(notFound);
+app.use(errorHandler);
+
+// app.get('/api/products', (req, res) => {
+//     res.json(products);
+// });
+
+
+// app.get('/api/products/:id', (req, res) => {
+//     const product = products.find((p) => p._id === req.params.id);
+//     res.json(product);
+// });
 
 //escucho en el puerto 5000
 app.listen(port, () => {

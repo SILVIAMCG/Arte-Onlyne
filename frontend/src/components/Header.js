@@ -11,7 +11,7 @@ const Header = () => {
                 <LinkContainer to="/">
                 <Navbar.Brand className= "navbar-brand">
                 <img src={logo} alt="logo" className="logo me-3" />   
-                Único y Diferente</Navbar.Brand>
+                ArteOnlyne</Navbar.Brand>
                 </LinkContainer>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
