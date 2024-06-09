@@ -75,11 +75,21 @@ h1, .navbar-brand {
 
 
 footer {
+    display: flex;
     background-color: rgba($primary, 1);
     color: black;
     text-align: center;
     padding: 1rem;
     margin-top: auto;
+    margin-bottom: 0;
+}
+
+.form .form-button{
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 

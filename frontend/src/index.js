@@ -14,6 +14,8 @@ import reportWebVitals from './reportWebVitals';
 import Home from './components/Home';
 import ProductView from './components/ProductView';
 import Cart from './components/Cart';
+import Login from './components/Login';
+import Register from './components/Register';
 
 
 
@@ -25,6 +27,8 @@ const router = createBrowserRouter(
       <Route index = {true}path ="/" element={<Home />} />
       <Route path="/product/:id" element={<ProductView />} />
       <Route path="/carrito" element={<Cart />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/registro" element={<Register />} />
     </Route>
   )  
 );

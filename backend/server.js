@@ -4,12 +4,19 @@ dotenv.config();
 import connectDB from './config/db.js';
 const port = process.env.PORT || 5000;
 import productRoutes from './routes/productRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import  {notFound, errorHandler} from './middleware/errorMw.js';
+import cookieParser from 'cookie-parser';
 
 //conecto la base de datos
 connectDB();
 //inicializo express
 const app = express();
+
+//middleware para aceptar json
+app.use(express.json());
+
+app.use(cookieParser());
 
 //creo una ruta
 app.get('/', (req, res) => {
@@ -18,6 +25,7 @@ app.get('/', (req, res) => {
 
 //las rutas vienen de productRoutes
 app.use('/api/products', productRoutes);
+app.use('/api/authuser', authRoutes);
 
 //middleware para errores
 app.use(notFound);
