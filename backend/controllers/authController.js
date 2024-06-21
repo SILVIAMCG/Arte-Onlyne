@@ -39,6 +39,55 @@ const register = asyncHandler(async (req, res) => {
     }
 });
 
-export { register };
+
+const login = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const isUser = await User.findOne({email});
+        if (!isUser) {
+            res.status(400).json({ message: 'Usuario o contraseña incorrecto' });
+            return;
+        }
+        const isMatch = await bcrypt.compare(password, isUser.password);
+        if (!isMatch) {
+            res.status(400).json({ message: 'Usuario o contraseña incorrecto' });
+            return;
+        }
+
+        jwt.sign({ id: isUser._id }, process.env.JWT_SECRET, { expiresIn: '30d' }, (err, token) => {
+            if (err) {
+                throw new Error(err);
+            }
+            res.cookie('token', token, {
+                httpOnly: true,
+            });
+            res.status(200).json({ token, user: isUser });
+        });
+        
+       }catch (error) {
+            res.status(400).json({ message: error.message });
+            clearCookie();
+        }
+});
+
+const logout = asyncHandler(async (req, res) => {
+    res.cookie('token', '', {
+        httpOnly: true,
+        expires: new Date(0),
+    });
+    res.json({ message: 'Logged out' });
+});
+
+const profile = asyncHandler(async(req,res) => {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+        res.status(404).json({ message: 'Usuario no encontrado' });
+        return;
+    }
+    return res.json(user);
+
+});
+
+export { register, login, logout, profile};
 
 

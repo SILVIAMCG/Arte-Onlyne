@@ -7,11 +7,14 @@ import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import  {notFound, errorHandler} from './middleware/errorMw.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 //conecto la base de datos
 connectDB();
 //inicializo express
 const app = express();
+
+app.use(cors());
 
 //middleware para aceptar json
 app.use(express.json());
@@ -26,6 +29,9 @@ app.get('/', (req, res) => {
 //las rutas vienen de productRoutes
 app.use('/api/products', productRoutes);
 app.use('/api/authuser', authRoutes);
+app.use('/api/login', authRoutes);
+app.use('/api/logout', authRoutes);
+app.use('/api/profile', authRoutes);
 
 //middleware para errores
 app.use(notFound);

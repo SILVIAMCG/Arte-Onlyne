@@ -1,23 +1,71 @@
 import React from 'react'
 import {Container, Row, Col, Card, Form, Button} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {useForm} from 'react-hook-form';
+import {useContext, useState, useEffect} from 'react';
+// import {loginRequest} from './api/auth.js';
+import { userContext } from './context/DataContext.js';
+import { set } from 'mongoose';
+
+
 
 const Login = () => {
+    // const {setUser, isAuthenticated, setIsAuthenticated,loginUser} = useContext(userContext);
+    const navigate = useNavigate();
+    const {register, handleSubmit, formState: { errors },reset} = useForm();
+    const [errorMessage, setErrorMessage] = useState('');
+
+    //PRUEBA
+    const {loginUser} =useContext(userContext);
+
+    
+    const handleInputChange = () => {
+        setErrorMessage(''); 
+    };
+
+    const onSubmit = handleSubmit(async(data) => {
+        try{
+        // const res = await loginRequest(data);
+        const isLogged = await loginUser(data);
+        if (isLogged){
+            navigate('/');
+        }else{
+            setErrorMessage("Error iniciando sesión");
+            reset();
+        }
+        console.log(isLogged);
+        // console.log(res);
+        // navigate('/');
+        } catch (error) {
+            console.error("Error iniciando sesión:", error);
+            setErrorMessage("Error iniciando sesión");
+            reset();
+        }
+    });
+
+
   return (
     <Container>
         <Row className="justify-content-md-center">
             <Col xs={12} md={6}>
             <Card className="my-5 p-3">
                 <h2 className="text-center">Iniciar Sesión</h2>
-                <Form className = "form">
+                {errorMessage && (
+                        <div className="alert alert-danger">
+                            {errorMessage}
+                        </div>
+                        )}
+                <Form className = "form" onSubmit = {handleSubmit(onSubmit)}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" placeholder="Ingresa tu email" />
+                    <Form.Control type="email" placeholder="Ingresa tu email" {...register ("email", {required: true})} onChange={handleInputChange}/>
+                    {errors.email && <span className="text-danger">Este campo es obligatorio</span>}
                 </Form.Group>
     
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Contraseña</Form.Label>
-                    <Form.Control type="password" placeholder="Contraseña" />
+                    <Form.Control type="password" placeholder="Contraseña" {...register ("password", {required: true})}/>
+                    {errors.password && <span className="text-danger">Este campo es obligatorio</span>}
                 </Form.Group>
                 <Button className = "form-button" variant="secondary" type="submit">
                     Iniciar Sesión

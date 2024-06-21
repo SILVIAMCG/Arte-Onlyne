@@ -3,9 +3,11 @@ import {Container, Row, Col, Card} from 'react-bootstrap';
 import Search from './Search';
 // import products from '../products';
 import Product from './Product';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import {Nav,NavLink} from 'react-bootstrap';
 import {FaFacebook, FaInstagram} from 'react-icons/fa';
-import {useState, useContext} from 'react';
+import {useState, useContext, useEffect} from 'react';
 import {dataContext} from './context/DataContext';
 
 
@@ -20,6 +22,15 @@ const Home = () => {
     const filteredProducts = products.filter((product) =>
       selectedCategory ? product.categoria === selectedCategory : true
     );
+
+    useEffect(() => {
+      AOS.init({duration: 2000,
+        once: true,
+        easing: 'ease-in-out',
+        offset: 200,
+      });
+      
+    },[]);
   
   return (
     <Container className="d-flex flex-column min-vh-100">
@@ -29,7 +40,7 @@ const Home = () => {
           <Search onCategorySelect={handleCategorySelect} />
         </Col>
         <Col sm={12} md={6} className="d-flex flex-column">
-          <h1 className="py-3 text-center flex-grow-1 sm-12">
+          <h1 className="py-3 text-center flex-grow-1 sm-12" data-aos ="fade-right">
             Artículos hechos a mano que te encantarán
           </h1>
         </Col>
@@ -57,7 +68,7 @@ const Home = () => {
         </Col>
       </Row>
       <Container>
-        <h1 className="text-center py-3">¿Quienes Somos?</h1>
+        <h1 className="text-center py-3" data-aos = "fade-right">¿Quienes Somos?</h1>
         <Container className="nosotros">
           <Row>
             <Col>
@@ -68,7 +79,7 @@ const Home = () => {
               </p>
               <Row>
                 <Col sm={12} md={4}>
-                  <Card className="my-3 p-3 rounded" sm={12} md={4}>
+                  <Card className="my-3 p-3 rounded" data-aos ="flip-right" sm={12} md={4}>
                     <Card.Img src="/img/variedad.png" variant="top" className="servicio img-fluid"/>
                     <Card.Body>
                       <Card.Title as="h3" className="text-center">
@@ -81,7 +92,7 @@ const Home = () => {
                   </Card>
                 </Col>
                 <Col sm={12} md={4}>
-                  <Card className="my-3 p-3 rounded" sm={12} md={4}>
+                  <Card className="my-3 p-3 rounded" data-aos ="flip-right" sm={12} md={4}>
                     <Card.Img src="/img/seguridad.png" variant="top" className="servicio img-fluid"/>
                     <Card.Body>
                       <Card.Title as="h3" className="text-center">
@@ -95,7 +106,7 @@ const Home = () => {
                 </Col>
 
                 <Col sm={12} md={4}>
-                  <Card className="my-3 p-3 rounded" sm={12} md={4}>
+                  <Card className="my-3 p-3 rounded" data-aos ="flip-right" sm={12} md={4}>
                     <Card.Img src="/img/garantia.png" variant="top" className="servicio img-fluid"/>
                     <Card.Body>
                       <Card.Title as="h3" className="text-center">

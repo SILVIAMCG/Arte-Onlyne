@@ -1,29 +1,62 @@
 import React from 'react'
+import {registerRequest} from './api/auth.js';
 import {Container, Row, Col, Card, Form, Button} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
+import {useContext, useState, useEffect} from 'react';
+import { userContext } from './context/DataContext.js';
+
+
 
 
 const Register = () => {
 
-    const {register, handleSubmit, formState: { errors }} = useForm();
+    const {setUser, setIsAuthenticated, fetchUser} = useContext(userContext);
+    const navigate = useNavigate();
+    const {register, handleSubmit, formState: { errors },reset} = useForm();
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const onSubmit = (data) => {
-        console.log(data);
-    }
+    const onSubmit = handleSubmit(async(data) => {
+        try{
+        // const res = await registerRequest(data);
+         const res = await fetchUser(data);
+        // const user = res.data;
+        // setUser(user);
+        //const { token, user } = res.data;
+        // localStorage.setItem('token', token);
+        // setUser(user);
+        setIsAuthenticated(true);
+        reset();
+        setErrorMessage('');
+        navigate('/login');
+        // await fetchUser(user);
+        } catch (error) {
+            console.error("Error registrando usuario:", error);
+            setErrorMessage("Error registrando usuario");
+            reset();
+        }
+    });
+
+    const handleInputChange = () => {
+        setErrorMessage(''); 
+    };
+
     return (
         <Container>
             <Row className="justify-content-md-center">
                 <Col xs={12} md={6}>
                 <Card className="my-5 p-3">
                     <h2 className="text-center">Registrarse</h2>
-
+                    {errorMessage && (
+                        <div className="alert alert-danger">
+                            {errorMessage}
+                        </div>
+                        )}
                     <Form className = "form" onSubmit = {handleSubmit(onSubmit)}>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3" controlId="formBasicUsername">
                         <Form.Label>Nombre de Usuario</Form.Label>
-                        <Form.Control type="text" placeholder="Ingresa tu nombre de usuario" {...register ("nombre", {required: true})} />
-                        {errors.nombre && <span class="text-danger">Este campo es obligatorio</span>}
-
+                        <Form.Control type="text" placeholder="Ingresa tu nombre de usuario" {...register ("nombre", {required: true})} onChange={handleInputChange}/>
+                        {errors.nombre && <span className="text-danger">Este campo es obligatorio</span>}
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -34,8 +67,8 @@ const Register = () => {
                         value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                         message: 'Ingrese un correo electrónico válido'
                         }
-                     })}/>
-                        {errors.email && <span class="text-danger">{errors.email.message}</span>}
+                     })} onChange={handleInputChange}/>
+                        {errors.email && <span className="text-danger">{errors.email.message}</span>}
                     </Form.Group>
         
                     <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -46,12 +79,13 @@ const Register = () => {
                                 value: 6,
                                 message: 'La contraseña debe tener al menos 6 caracteres'
                             }
-                        })}/>
-                        {errors.password && <span class="text-danger">{errors.password.message}</span>}
+                        })} onChange={handleInputChange}/>
+                        {errors.password && <span className="text-danger">{errors.password.message}</span>}
                     </Form.Group>
                     <Button className = "form-button" variant="secondary" type="submit">
                         Regístrate
                     </Button>
+
                     <Form.Group className="mb-3 mt-3">
                         <Form.Text>           
                             ¿Ya tienes cuenta? <Link to="/login">Inicia Sesión</Link>
