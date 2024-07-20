@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+//ESTE MODELO AUN NO SE USA, PERO SE USARA PARA LAS ORDENES DE COMPRA
+
 const orderSchema = new mongoose.Schema({
     usuario: {
         type: mongoose.Schema.Types.ObjectId,

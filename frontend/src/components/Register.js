@@ -18,18 +18,11 @@ const Register = () => {
 
     const onSubmit = handleSubmit(async(data) => {
         try{
-        // const res = await registerRequest(data);
          const res = await fetchUser(data);
-        // const user = res.data;
-        // setUser(user);
-        //const { token, user } = res.data;
-        // localStorage.setItem('token', token);
-        // setUser(user);
         setIsAuthenticated(true);
         reset();
         setErrorMessage('');
         navigate('/login');
-        // await fetchUser(user);
         } catch (error) {
             console.error("Error registrando usuario:", error);
             setErrorMessage("Error registrando usuario");

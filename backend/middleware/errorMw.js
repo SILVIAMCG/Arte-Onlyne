@@ -1,3 +1,5 @@
+//ESTE MIDDLEWARE ES PARA MANEJAR ERRORES
+
 const notFound = (req, res, next) => {
     const error = new Error(`No encontrado - ${req.originalUrl}`);
     res.status(404);

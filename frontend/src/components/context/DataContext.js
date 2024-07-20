@@ -1,22 +1,19 @@
 
-
 import { createContext, useEffect, useState } from "react";
 import axios from 'axios';
-// import { login } from "../../../../backend/controllers/authController";
 import { registerRequest, loginRequest, logoutRequest} from "../api/auth";
-// import { register } from "../../../../backend/controllers/authController";
 const port = process.env.PORT || 5000;
 
 export const dataContext = createContext();
 export const userContext = createContext();
 
+//ESTA FUNCION ES PARA MANEJAR EL CONTEXTO DE LOS PRODUCTOS
 export const DataProvider = ({ children }) => {
     const [data, setData] = useState([]);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:${port}/api/products`);
+                const response = await axios.get(`http://localhost:${port}/api/products`); //Aqui se puso la solicitud directamente, es la primera funcion que se hizo, las de usuario son diferentes
                 setData(response.data);
                 console.log(response.data);
             } catch (error) {
@@ -33,58 +30,20 @@ export const DataProvider = ({ children }) => {
     );
 };
 
-
+//ACA VIENEN LOS CONTEXTOS DE LOS USUARIOS, TANTO PARA REGISTRAR, LOGEAR, REGISTRAR VENDEDOR Y DATOS BANCARIOS
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false); //Esta variable es para verificar si esta autenticado en el form register
 
-    //PRUEBA PARA LOGIN
-    const [isLogged, setIsLogged] = useState(false);
+    const [isLogged, setIsLogged] = useState(false); //Esta variable es para verificar si esta logeado en el form login
+    const [token, setToken] = useState(null)
 
-    //PRIMER INTENTO DE FETCHuSER
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         try {
-    //             const token = localStorage.getItem('token');
-    //             if (!token) return;
-      
-    //             const response = await axios.get(`http://localhost:${port}/api/authuser`, {
-    //                 headers: {
-    //                     'Authorization': `Bearer ${token}`
-    //                 }
-    //             });
-    //             setUser(response.data.user);
-    //             setIsAuthenticated(true);
-
-    //             console.log(response.data.user);
-    //         } catch (error) {
-    //             console.error("Error fetching user:", error);
-    //             setError(error);
-    //         }
-    //     };
-    //     const token = localStorage.getItem('token');
-    //     if (token) {
-    //         fetchUser();
-    //     }
-
-    
-    //  }, []);
-
-
-
-    //SEGUNDO INTENTO DE FETCHUSER
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token');
-    //     if (token) {
-    //         fetchUser(token);
-    //     }
-    // }, []);
 
     const fetchUser = async (user) => {
         try {
-            const response = await registerRequest(user);                
+            const response = await registerRequest(user); //el registerRequest viene de api/auth.js               
             setUser(response.data.user);
             setIsAuthenticated(true);
         } catch (error) {
@@ -93,7 +52,17 @@ export const UserProvider = ({ children }) => {
         }
     };
 
-        
+    //ESTA ES UNA PRUEBA PARA VER SI SE PUEDE MANTENER LA SESION INICIADA, FUNCIONA
+    useEffect(() => {
+        const savedToken = localStorage.getItem('token');
+        if (savedToken) {
+            setToken(savedToken);
+            setIsAuthenticated(true);
+        }
+    }, []);
+    //FIN PRUEBA
+
+    //FUNCION PARA EL LOGIN
     const loginUser = async (credentials) => {
         try {
             const response = await loginRequest(credentials);
@@ -112,12 +81,12 @@ export const UserProvider = ({ children }) => {
             return false;
         }
     };
-
+    //FUNCION PARA CERRAR SESION
     const logoutUser = async () => {
         try {
-            const response = await logoutRequest(user);
+            const response = await logoutRequest(user); //el logoutRequest viene de api/auth.js
             const data = response.data;
-            localStorage.removeItem('token');
+            localStorage.removeItem('token'); //ELIMINA EL TOKEN DE LOCALSTORAGE
             setUser(null);
             setIsLogged(false);
         } catch (error) {
@@ -128,7 +97,8 @@ export const UserProvider = ({ children }) => {
 
 
     return (
-        <userContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, isLogged, setIsLogged, fetchUser, loginUser, logoutUser}}>
+        //ESTE CONTEXT SE USA EN INDEX.JS
+        <userContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, isLogged, setIsLogged, fetchUser, loginUser, logoutUser,token}}>
             {children}
         </userContext.Provider>
     );

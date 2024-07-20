@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+//ESTE MODELO DE MOMENTO SOLO FUNCIONA PARA PRODUCTOS DE PRUEBA, MAS ADELANTE SE IMPLEMENTARA PARA QUE LOS USUARIOS PUEDAN INGRESAR PRODUCTOS
+
 const reviewSchema = new mongoose.Schema({
     //este usuario no es el mismo asociado al producto
     usuario: {

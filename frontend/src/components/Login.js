@@ -3,14 +3,12 @@ import {Container, Row, Col, Card, Form, Button} from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 import {useContext, useState, useEffect} from 'react';
-// import {loginRequest} from './api/auth.js';
 import { userContext } from './context/DataContext.js';
-import { set } from 'mongoose';
+
 
 
 
 const Login = () => {
-    // const {setUser, isAuthenticated, setIsAuthenticated,loginUser} = useContext(userContext);
     const navigate = useNavigate();
     const {register, handleSubmit, formState: { errors },reset} = useForm();
     const [errorMessage, setErrorMessage] = useState('');
@@ -25,8 +23,7 @@ const Login = () => {
 
     const onSubmit = handleSubmit(async(data) => {
         try{
-        // const res = await loginRequest(data);
-        const isLogged = await loginUser(data);
+        const isLogged = await loginUser(data); //isLogged viene de DataContext.js y debe ser true
         if (isLogged){
             navigate('/');
         }else{
@@ -34,8 +31,6 @@ const Login = () => {
             reset();
         }
         console.log(isLogged);
-        // console.log(res);
-        // navigate('/');
         } catch (error) {
             console.error("Error iniciando sesión:", error);
             setErrorMessage("Error iniciando sesión");

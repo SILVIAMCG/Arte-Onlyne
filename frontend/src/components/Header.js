@@ -1,40 +1,21 @@
 import {Navbar, Nav, Container} from 'react-bootstrap';
 import {FaSalesforce, FaShoppingCart, FaUser} from 'react-icons/fa';
 import {LinkContainer} from 'react-router-bootstrap';
-// import logo from '../images/logo.png';
 import {loginRequest, logoutRequest} from './api/auth.js';
 import {useState, useEffect, useContext} from 'react';
 import { userContext } from './context/DataContext';
+import { sellerContext } from './context/SellerContext.js';
 import {useNavigate} from 'react-router-dom';
 
 
 const Header = () => {
-
-    // const [logged, setLogged] = useState(false);
-
-    // const isLogged = async () => {
-    //     try{
-    //         const res = await loginRequest();
-    //         setLogged(true);
-    //         console.log(res);
-    //     }catch (error){
-    //         console.error("Error iniciando sesión:", error);
-    //     }
-    // };
+    //AQUI SE HICIERON VARIAS PRUEBAS PARA PODER CAMBIAR LA BARRA DE NAVEGACION DEPENDIENDO DE SI ESTA LOGEADO EL USUARIO
+    //Y ADEMAS PARA QUE PUEDA ACCEDER AL FORMULARIO DE REGISTRO DEL VENDEDOR SI ESTA LOGEADO, Y SI NO NO
     const { isLogged, loginUser, logoutUser } = useContext(userContext);
+    const { sellerInfo, isCompleted } = useContext(sellerContext);
     const navigate = useNavigate();
 
-
-    // const logged = () => {
-    //     const isAuthenticated = loginUser();
-    //     if (isAuthenticated){
-    //         return true;
-    //     }else{
-    //         return false;
-    //     }
-    // }
-    
-
+    //Para cuando el usuario cierre sesion
     const handleLogged = async() => {
         try{
         await logoutUser();
@@ -44,6 +25,14 @@ const Header = () => {
             console.error("Error cerrando sesión:", error);
         }
     };
+    //ESTAS SON PRUEBAS, POR EL MOMENTO NO SE ESTAN USANDO
+    // const handleSellerData = async() => {
+    //     try{
+    //        await navigate('/vender');
+    //     }catch (error){
+    //         console.error("Error registrando datos de vendedor:", error);
+    //     }
+    // };
 
     // useEffect(() => {
     //     console.log("useEffect isLogged called");
@@ -61,16 +50,18 @@ const Header = () => {
                 <LinkContainer to="/">
                 <Navbar.Brand className= "navbar-brand">
                 {/* <img src={logo} alt="logo" className="logo me-3" />    */}
-                <img src="img/logo.png" alt="logo" className="logo me-3" />   
+                <img src="/img/logo.png" alt="logo" className="logo me-3" />   
                 ArteOnlyne</Navbar.Brand>
                 </LinkContainer>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">
+
                         <LinkContainer to="/carrito">
                         <Nav.Link>
                             <FaShoppingCart /> Carrito
                         </Nav.Link>
+                    {/* Si el usuario esta logeado, se muestra cerrar sesion, si no, iniciar sesion */}
                      </LinkContainer>
                             {isLogged ? (
                                 <Nav.Link onClick={handleLogged}>
@@ -84,11 +75,22 @@ const Header = () => {
                                     </Nav.Link>
                                 </LinkContainer>
                             )}
-                        <LinkContainer to="/vender">
-                        <Nav.Link>
-                            <FaUser /> Vende con nosotros
-                        </Nav.Link>
-                        </LinkContainer>
+
+                        {/* Si el usuario esta logeado, se muestra el formulario de ingresar datos de vendedor, si no, el login        
+                                                 */}  
+                        {isLogged ? (
+                                <LinkContainer to="/vender">
+                                    <Nav.Link>
+                                        <FaUser /> Vende con nosotros
+                                    </Nav.Link>
+                                </LinkContainer>
+                            ) : (
+                                <LinkContainer to="/login">
+                                    <Nav.Link>
+                                        <FaUser /> Vende con nosotros
+                                    </Nav.Link>
+                                </LinkContainer>
+                            )}                                        
                     </Nav>
                 </Navbar.Collapse>
             </Container>

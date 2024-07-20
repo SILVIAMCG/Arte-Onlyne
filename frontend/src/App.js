@@ -3,11 +3,13 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import {Outlet} from 'react-router-dom';
 import {DataProvider, UserProvider } from './components/context/DataContext';
+import { SellerProvider } from './components/context/SellerContext';
 
 const App = () => {
   return (<>
   <DataProvider>
-    <UserProvider>   
+    <UserProvider>  
+    <SellerProvider>
     <Header />
     <main className="py-3">
       <Container>
@@ -18,6 +20,7 @@ const App = () => {
       </Container>
     </main>
     <Footer />
+    </SellerProvider>
     </UserProvider> 
   </DataProvider> 
   </>    

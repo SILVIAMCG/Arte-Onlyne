@@ -1,6 +1,9 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
 
+//ESTE ARCHIVO ES PARA TRAER PRODUCTOS, POR AHORA LOS PRODUCTOS FUERON INGRESADOS COMO MUESTRA
+//MAS ADELANTE SE IMPLEMENTARA LO NECESARIO PARA QUE LOS USUARIOS PUEDAN INGRESAR PRODUCTOS
+
 //creo una ruta para los productos
 //ruta: GET /api/products
 const getProducts = asyncHandler(async (req, res) => {

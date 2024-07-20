@@ -16,6 +16,9 @@ import ProductView from './components/ProductView';
 import Cart from './components/Cart';
 import Login from './components/Login';
 import Register from './components/Register';
+import RegisterSeller from './components/RegisterSeller';
+import RegisterBank from './components/RegisterBank.js';
+import ProtectedRoute from './utils/ProtectedRoute.js';
 
 
 
@@ -29,6 +32,11 @@ const router = createBrowserRouter(
       <Route path="/carrito" element={<Cart />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Register />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/vender" element={<RegisterSeller />} />
+        <Route path="/banco" element={<RegisterBank />} />
+      </Route>
+
     </Route>
   )  
 );
