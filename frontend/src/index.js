@@ -18,6 +18,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import RegisterSeller from './components/RegisterSeller';
 import RegisterBank from './components/RegisterBank.js';
+import ProductForm from './components/ProductForm';
 import ProtectedRoute from './utils/ProtectedRoute.js';
 
 
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
       <Route element={<ProtectedRoute />}>
         <Route path="/vender" element={<RegisterSeller />} />
         <Route path="/banco" element={<RegisterBank />} />
+        <Route path="/misproductos" element={<ProductForm />} />
       </Route>
 
     </Route>

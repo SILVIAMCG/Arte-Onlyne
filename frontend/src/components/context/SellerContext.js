@@ -3,7 +3,6 @@ import axios from 'axios';
 import { sellerRequest, sellerBankRequest } from "../api/seller";
 
 
-
 export const sellerContext = createContext();
 
 export const SellerProvider = ({ children }) => {
@@ -11,6 +10,8 @@ export const SellerProvider = ({ children }) => {
     const [sellerBankInfo, setSellerBankInfo] = useState(null);
     const [error, setError] = useState(null);
     const [isCompleted, setIsCompleted] = useState(false);
+    //ESTA ES PARA PROBAR EN EL CONTEXT SI PUEDE VENDER
+    const [accessSeller, setAccessSeller] = useState(false);
 
     
     //esta funcion es para hacer la solicitud de la ruta para el formulario de datos del vendedor
@@ -56,6 +57,7 @@ export const SellerProvider = ({ children }) => {
                 setSellerInfo(seller);
                 console.log("Datos del banco desde context", bankDetails);
                 console.log("Datos del vendedor actualizados desde context", seller);
+                setAccessSeller(true);  //si todo esta completo, se puede vender
             } else {
                 console.error("Respuesta inesperada de la API", response);
             }
@@ -69,7 +71,7 @@ export const SellerProvider = ({ children }) => {
 
     return (
         //ESTE CONTEXT VA A INDEX.JS
-        <sellerContext.Provider value={{ sellerInfo, setSellerInfo, error, isCompleted, setIsCompleted, fetchSellerData, sellerBankInfo, setSellerBankInfo,fetchSellerBankData}}>
+        <sellerContext.Provider value={{ sellerInfo, setSellerInfo, error, isCompleted, setIsCompleted, fetchSellerData, sellerBankInfo, setSellerBankInfo,fetchSellerBankData, accessSeller, setAccessSeller}}>
             {children}
         </sellerContext.Provider>
     );

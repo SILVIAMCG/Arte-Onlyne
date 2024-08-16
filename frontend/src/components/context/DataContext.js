@@ -40,26 +40,59 @@ export const UserProvider = ({ children }) => {
     const [isLogged, setIsLogged] = useState(false); //Esta variable es para verificar si esta logeado en el form login
     const [token, setToken] = useState(null)
 
+//ANTIGUO FETCHUSER
+    // const fetchUser = async (user) => {
+    //     try {
+    //         const response = await registerRequest(user);            
+    //         setUser(response.data);
+    //         setIsAuthenticated(true);
+    //     } catch (error) {
+    //         console.error("Error fetching user:", error);
+    //         setError(error);
+    //     }
+    // };
 
+    //NUEVO FETCHUSER
     const fetchUser = async (user) => {
         try {
-            const response = await registerRequest(user); //el registerRequest viene de api/auth.js               
-            setUser(response.data.user);
+            const fetchedUser = await registerRequest(user); // El registerRequest viene de api/auth.js               
+            setUser(fetchedUser); // fetchedUser ya es response.data.user
             setIsAuthenticated(true);
+            return fetchedUser; // Devuelve el usuario para manejarlo en el componente del formulario
         } catch (error) {
             console.error("Error fetching user:", error);
             setError(error);
+            return null; // Devuelve null en caso de error
         }
     };
 
     //ESTA ES UNA PRUEBA PARA VER SI SE PUEDE MANTENER LA SESION INICIADA, FUNCIONA
-    useEffect(() => {
+    // useEffect(() => {
+    //     const savedToken = localStorage.getItem('token');
+    //     console.log('Token desde context',savedToken);
+    //     if (savedToken) {
+    //         setToken(savedToken);
+    //         setIsAuthenticated(true);
+    //     }
+    // }, []);
+
+
+    //FUNCION PARA CHEQUEAR TOKEN
+
+
+    const checkAuthToken = () => {
+        console.log('Funcion checkOut se ejecuta');
         const savedToken = localStorage.getItem('token');
+        console.log('Token desde context', savedToken); 
         if (savedToken) {
-            setToken(savedToken);
             setIsAuthenticated(true);
+            setIsLogged(true); // Ajusta según sea necesario
         }
-    }, []);
+    };
+    
+    // useEffect(() => {
+    //     checkAuthToken();
+    // }, []);
     //FIN PRUEBA
 
     //FUNCION PARA EL LOGIN
@@ -71,6 +104,7 @@ export const UserProvider = ({ children }) => {
             setUser(data.user);
             if (data.user) {
                 setIsLogged(true);
+                checkAuthToken();
                 return true;
             }else{
                 throw new Error("Usuario no encontrado");
@@ -89,6 +123,8 @@ export const UserProvider = ({ children }) => {
             localStorage.removeItem('token'); //ELIMINA EL TOKEN DE LOCALSTORAGE
             setUser(null);
             setIsLogged(false);
+            setIsAuthenticated(false);
+            return;
         } catch (error) {
             console.error("Error cerrando sesión:", error);
             setError(error);
@@ -103,4 +139,6 @@ export const UserProvider = ({ children }) => {
         </userContext.Provider>
     );
 };
+
+
 

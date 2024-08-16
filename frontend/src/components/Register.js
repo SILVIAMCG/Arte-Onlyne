@@ -19,10 +19,16 @@ const Register = () => {
     const onSubmit = handleSubmit(async(data) => {
         try{
          const res = await fetchUser(data);
+         console.log(res);
+         if(res){
         setIsAuthenticated(true);
         reset();
         setErrorMessage('');
         navigate('/login');
+         }else{
+            setErrorMessage("Error registrando usuario");
+            reset();
+         }
         } catch (error) {
             console.error("Error registrando usuario:", error);
             setErrorMessage("Error registrando usuario");

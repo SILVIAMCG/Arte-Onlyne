@@ -62,6 +62,12 @@ const saveSellerDataTemp = asyncHandler(async (req, res) => {
             res.status(400).json({ message: 'Usuario no registrado' });
             return;
         }
+
+        const rutExists = await Seller.findOne({ rut });
+        if (rutExists) {
+            res.status(400).json({ message: 'El RUT ya está registrado' });
+            return;
+        }
         //SE CREA UN OBJETO CON LOS DATOS TEMPORALES DEL VENDEDOR
         const userDataTemp = {
             usuario : req.user._id,
@@ -73,13 +79,15 @@ const saveSellerDataTemp = asyncHandler(async (req, res) => {
             telefono,
             datosBancarios: []
         } 
+
+   
         //esto es nuevo
         const token = jwt.sign(userDataTemp, process.env.JWT_SECRET);
         //fin de lo nuevo
 
         //SE GUARDA EL OBJETO EN UNA COOKIE, hay que revisar esto porque al parecer la cookie no se envia desde el cliente
         //Al probar en postman si se guarda la cookie, pero desde el form no se guarda
-        res.cookie('userDataTemp', token, { httpOnly: true, sameSite: 'None' });
+        res.cookie('userDataTemp', token, { httpOnly: true, secure: false});
         return res.status(200).json({ message: 'Datos guardados temporalmente', userDataTemp,token});
         
         }catch(error){
@@ -88,6 +96,7 @@ const saveSellerDataTemp = asyncHandler(async (req, res) => {
         }
 
     });
+
 
 //FUNCION PARA REGISTRAR LOS DATOS BANCARIOS DEL VENDEDOR, SE DEBE HABER REGISTRADO LOS DATOS TEMPORALES
 
@@ -172,6 +181,64 @@ const registerSellerBank = asyncHandler(async (req, res) => {
     }
 });
 
+// const sellProducts = asyncHandler(async (req, res) => {
+//     try {
+//         const seller = await Seller.findOne({ usuario: req.user._id});
+//         if (!seller) {
+//             return res.status(400).json({ message: 'Vendedor no encontrado' });
+//         }
+//         console.log('ya puedes vender tus productos');
+//         return res.json(seller);
+//     } catch (error) {
+//         console.error("Error en sellProducts:", error);
+//         return res.status(500).json({ message: 'Error al vender productos', error: error.message });
+//     }
+// });
 
 
-export { saveSellerDataTemp, registerSellerBank};
+//NUEVO ENFOQUE CON USUARIO ES VENDEDOR
+const sellProducts = asyncHandler(async (req, res) => {
+    try {
+        // Verifica si req.user está definido
+        if (!req.user || !req.user._id) {
+            return res.status(401).json({ message: 'Usuario no autenticado' });
+        }
+
+        // Encuentra al usuario basado en el ID
+        const user = await User.findById(req.user._id);
+
+        // Verifica si el usuario es un vendedor
+        if (!user || !user.esVendedor) {
+            return res.status(400).json({ message: 'No autorizado: Usuario no es vendedor' });
+        }
+
+        console.log('Ya puedes vender tus productos');
+        return res.json({ message: 'Acceso concedido' }); // Puedes devolver lo que necesites aquí
+    } catch (error) {
+        console.error("Error en sellProducts:", error);
+        return res.status(500).json({ message: 'Error al vender productos', error: error.message });
+    }
+});
+
+
+//PARA VERIFICAR SI EL USUARIO ES VENDEDOR
+
+const authorizeSeller = asyncHandler(async (req, res, next) => {
+    try{
+        const user = await User.findById(req.user._id);
+        if(!user && !user.esVendedor){       
+            return res.status(401).json({ message: 'Usuario no autorizado' });
+        }            
+        return res.status(200).json({ message: 'Usuario autorizado' });
+
+    } catch (error) {
+        console.error("Error en authorizeSeller:", error);
+        return res.status(500).json({ message: 'Error al autorizar usuario vendedor', error: error.message });
+    } 
+});
+    
+
+
+
+
+export { saveSellerDataTemp, registerSellerBank, sellProducts};

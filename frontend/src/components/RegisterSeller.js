@@ -28,6 +28,8 @@ const RegisterSeller = () => {
             navigate('/banco');
             reset();
             setErrorMessage('');
+            }else{
+                setErrorMessage("Error registrando usuario");
             }
         } catch (error) {
             console.error("Error registrando usuario:", error);

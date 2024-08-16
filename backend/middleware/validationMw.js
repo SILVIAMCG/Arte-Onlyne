@@ -10,6 +10,7 @@ import User from '../models/userModel.js';
 const cookieVerification = (req, res, next) => {
     console.log('Cookies:', req.cookies); //prueba para ver si recibe alguna cookie
     const userDataTemp = req.cookies.userDataTemp; //se guarda la cookie en una variable
+    console.log('userDataTemp:', userDataTemp); //se muestra en consola
 
     if (userDataTemp) {
         try {
@@ -116,8 +117,23 @@ const loginValidation = async (req, res, next) => {
 };
 
 
+//VERIFICA SI EL USUARIO ES VENDEDOR
+const authorizeSeller = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user || !user.esVendedor) {
+            return res.status(401).json({ message: 'Usuario no autorizado' });
+        }
+        req.accessSeller = true;
+        next();
+    } catch (error) {
+        console.error("Error en authorizeSeller:", error);
+        return res.status(500).json({ message: 'Error al autorizar usuario vendedor', error: error.message });
+    }
+};
+
     
         
 
 
-export { registerValidation, loginValidation, cookieVerification, verifyToken };
+export { registerValidation, loginValidation, cookieVerification, verifyToken, authorizeSeller };

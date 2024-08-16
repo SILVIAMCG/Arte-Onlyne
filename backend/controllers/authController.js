@@ -55,12 +55,13 @@ const login = asyncHandler(async (req, res) => {
             return;
         }
         //Se crea un token con el id del usuario y se guarda en una cookie
-        jwt.sign({ id: isUser._id }, process.env.JWT_SECRET, { expiresIn: '30d' }, (err, token) => {
+        jwt.sign({ id: isUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
             if (err) {
                 throw new Error(err);
             }
             res.cookie('token', token, {
                 httpOnly: true,
+
             });
             res.status(200).json({ token, user: isUser });
         });
@@ -78,6 +79,8 @@ const logout = asyncHandler(async (req, res) => {
         expires: new Date(0),
     });
     res.json({ message: 'Logged out' });
+
+
 });
 
 //ESTA FUNCION NO SE ESTA USANDO
@@ -90,6 +93,8 @@ const profile = asyncHandler(async(req,res) => {
     return res.json(user);
 
 });
+
+
 
 export { register, login, logout, profile};
 

@@ -23,6 +23,7 @@ export const sellerRequest = async (data) => {
                 Authorization: `Bearer ${token}`,
             },
         }); 
+        
         console.log("Response from sellerRequest:", response); // Verifica la respuesta completa
         console.log("Data from response:", response.data);
         return response.data;

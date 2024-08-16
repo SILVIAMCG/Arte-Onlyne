@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import {useForm} from 'react-hook-form';
 import {sellerContext} from './context/SellerContext.js';
+import Swal from 'sweetalert2';
 
 //ESTE FORMULARIO SOLO DEBE SER ACCESIBLE CUANDO EL USUARIO LLENE SUS DATOS PERSONALES DE VENDEDOR
 //Y HAYA PASADO LAS VALIDACIONES DE REGISTERSELLER
@@ -21,6 +22,8 @@ const RegisterBank = () => {
             const res = await fetchSellerBankData(data);
             if (res){
                 console.log("datos desde formulario",res);
+                showAlert();
+                navigate('/');
                 reset();
                 setErrorMessage('');
             }
@@ -35,6 +38,14 @@ const RegisterBank = () => {
     const handleInputChange = () => {
         setErrorMessage(''); 
     };
+
+    const showAlert = ()=>{Swal.fire({
+        icon: "success",
+        title: "¡Felicitaciones!",
+        text: "Ya puedes publicar tus productos",        
+      });
+
+    }
 
 
   return (
@@ -52,7 +63,16 @@ const RegisterBank = () => {
                         <Form className = "form" onSubmit= {handleSubmit(onSubmit)}>
                         <Form.Group className="mb-3" controlId="formBasicNameBank">
                             <Form.Label>Nombre Banco</Form.Label>
-                            <Form.Control type="text" placeholder="Ingresa tu banco"{...register ("nombreBanco", {required: true})} onChange={handleInputChange}/>
+                            <Form.Select {...register("nombreBanco", { required: true })} onChange={handleInputChange}
+                            >
+                                <option value="">Selecciona tu banco</option>
+                                <option value="Banco-Santander">Banco Santander</option>
+                                <option value="Banco-Estado">Banco Estado</option>
+                                <option value="Banco-Fallabella">Banco Fallabella</option>
+                                <option value="Banco-BCI">Banco Crédito e Inversiones</option>
+                                <option value="Banco-Scotiabank">Banco Scotiabank</option>
+                                <option value="Banco-Itau">Banco Itaú</option>
+                            </Form.Select>
                             {errors.nombreBanco && <span className="text-danger">Este campo es obligatorio</span>} 
                         </Form.Group>
     
@@ -64,8 +84,15 @@ const RegisterBank = () => {
     
                         <Form.Group className="mb-3" controlId="formBasicAccountType">
                             <Form.Label>Tipo de Cuenta</Form.Label>
-                            <Form.Control type="text" placeholder="Ingresa tu tipo de cuenta"{...register ("tipoCuentat", {required: true})} onChange={handleInputChange}/>
-                            {errors.tipoCuenta && <span className="text-danger">Este campo es obligatorio</span>}  
+                            <Form.Select {...register("tipoCuenta", { required: true })} onChange={handleInputChange}
+                            >
+                                <option value="">Selecciona tu tipo de cuenta</option>
+                                <option value="Cuenta-corriente">Cuenta Corriente</option>
+                                <option value="Cuenta-vista">Cuenta Vista</option>
+                                <option value="Cuenta-Rut">Cuenta Rut</option>
+                                <option value="Chequera-electronica">Chequera Electrónica</option>
+                            </Form.Select>
+                            {errors.tipoCuenta && <span className="text-danger">Este campo es obligatorio</span>}
                         </Form.Group>
     
                         <Form.Group className="mb-3" controlId="formBasicTitular">
