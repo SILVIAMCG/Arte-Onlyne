@@ -2,7 +2,7 @@ import React from 'react'
 import {useParams} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {Row, Col, Image, ListGroup, Button, Card, Container} from 'react-bootstrap';
-import Rating from './Rating';
+// import Rating from './Rating';
 import Select from 'react-select';
 // import products from '../products';
 import {useContext} from 'react';
@@ -16,7 +16,7 @@ const ProductView = () => {
     const {data: products} = useContext(dataContext);
 
     const handleSelect = ({value}) => {
-        console.log(value)
+    console.log(product.imagen);
     }
 
     
@@ -33,7 +33,7 @@ const ProductView = () => {
     <Container>
     <Row>
         <Col md={5}>
-            <Image src={product.imagen} alt={product.nombre} fluid />
+            <Image src={product.imagen.secure_url} alt={product.nombre} fluid />
         </Col>
 
         <Col md={4}>
@@ -41,9 +41,12 @@ const ProductView = () => {
                 <ListGroup.Item>
                     <h3>{product.nombre}</h3>
                 </ListGroup.Item>
-                <ListGroup.Item>
+
+                {/* NO SE UTILIZA review */}
+                {/* <ListGroup.Item>
                     <Rating value={product.rating} text={`${product.numReviews} reviews`} />
-                </ListGroup.Item>
+                </ListGroup.Item> */}
+
                 <ListGroup.Item>
                     Precio: ${product.precio}
                 </ListGroup.Item>

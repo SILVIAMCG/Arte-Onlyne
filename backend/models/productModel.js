@@ -2,26 +2,33 @@ import mongoose from "mongoose";
 
 //ESTE MODELO DE MOMENTO SOLO FUNCIONA PARA PRODUCTOS DE PRUEBA, MAS ADELANTE SE IMPLEMENTARA PARA QUE LOS USUARIOS PUEDAN INGRESAR PRODUCTOS
 
-const reviewSchema = new mongoose.Schema({
+//PRUEBA DEJANDO SOLO LO QUE SE USARA EN LOS PRODUCTOS
+//SE COMENTARA LO DEMAS
+//const reviewSchema = new mongoose.Schema({
     //este usuario no es el mismo asociado al producto
-    usuario: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: "User"
-    },
-    nombre: { type: String, required: true },
-    rating: { type: Number, required: true },
-    comentario: { type: String, required: true },
-}, {
-    timestamps: true,
+//     usuario: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         required: true,
+//         ref: "User"
+//     },
+//     nombre: { type: String, required: true },
+//     rating: { type: Number, required: true },
+//     comentario: { type: String, required: true },
+// }, {
+//     timestamps: true,
 
-});
+// });
 
 const productSchema = new mongoose.Schema({
+    // usuario: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: true,
+    //     ref: "User"
+    // },
     usuario: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: "User"
+        ref: "Seller"
     },
 
     nombre: {
@@ -30,8 +37,10 @@ const productSchema = new mongoose.Schema({
     },
 
     imagen: {
-        type: String,
-        required: true
+        // type: String,
+        // required: true
+        public_id: String,
+        secure_url: String
     },
 
     categoria: {
@@ -39,9 +48,9 @@ const productSchema = new mongoose.Schema({
         required: true
     },
 
-    fecha: {
-        type: Date,
-    },
+    // fecha: {
+    //     type: Date,
+    // },
 
     descripcion: {
         type: String,
@@ -53,19 +62,19 @@ const productSchema = new mongoose.Schema({
         required: true
     },
 
-    reviews: [reviewSchema],
+    // reviews: [reviewSchema],
 
-    rating: {
-        type: Number,
-        required: true,
-        default: 0
-    },
+    // rating: {
+    //     type: Number,
+    //     required: true,
+    //     default: 0
+    // },
 
-    numReviews: {
-        type: Number,
-        required: true,
-        default: 0
-    },
+    // numReviews: {
+    //     type: Number,
+    //     required: true,
+    //     default: 0
+    // },
 
     stock:{
         type: Number,

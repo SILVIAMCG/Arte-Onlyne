@@ -9,6 +9,7 @@ import authRoutes from './routes/authRoutes.js';
 import  {notFound, errorHandler} from './middleware/errorMw.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+// import fileUpload from 'express-fileupload';
 
 //DESDE ACA SE EJECUTA EL SERVIDOR, ESTA CONFIGURADO ASI EN EL PACKAGE.JSON
 
@@ -74,6 +75,14 @@ app.use('/api', (req, res, next) => {
 //middleware para aceptar json
 app.use(express.json());
 
+//middleware para aceptar archivos, se movio a la ruta de productos
+// app.use(fileUpload({
+//   useTempFiles : true,
+//   tempFileDir : './uploads'
+// }));
+
+
+
 
 
 //creo una ruta
@@ -83,6 +92,8 @@ app.get('/', (req, res) => {
 
 //las rutas vienen de productRoutes
 app.use('/api/products', productRoutes);
+//PRUEBA PARA MIS PRODUCTOS DESDE PRODUCT ROUTES
+app.use('/api/misproductos', productRoutes);
 
 //las rutas vienen de authRoutes
 app.use('/api/authuser', authRoutes);
