@@ -12,7 +12,7 @@ cloudinary.config({
 
 const uploadImage = async (filePath, userId) => {
     try {
-        const folderPath = `imagenes/${userId}`;  
+        const folderPath = `imagenes/${userId}`; //Carpeta donde se guardará la imagen con el id del usuario vendedor 
         const result = await cloudinary.uploader.upload(filePath, {
             folder: folderPath,  
         });

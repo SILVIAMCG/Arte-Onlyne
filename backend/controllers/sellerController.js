@@ -6,43 +6,6 @@ import SellerBank from '../models/sellerBankModel.js';
 
 
 
-//ACA SE INTENTO HACER UNA FUNCION PARA REGISTRO Y NO FUNCIONO
-// const sellerRegister = asyncHandler(async (req, res) => {
-//     const { nombre, apellidoPat, apellidoMat, rut, telefono } = req.body;
-//     try{
-//         const isRegistered = await User.findById(req.params.id);
-//         const isVerified = await SellerBank.findOne(req.params.isVerified);
-//         if(isRegistered.esVendedor){
-//             res.status(400).json({ message: 'El usuario ya es vendedor' });
-//             return;
-//         };
-//         if(!isRegistered){
-//             res.status(400).json({ message: 'Usuario no registrado' });
-//             return;
-//         }
-//         const newSeller = new Seller({
-//             usuario: req.user._id,
-//             nombre,
-//             apellidoPat,
-//             apellidoMat,
-//             rut,
-//             email: isRegistered.email,
-//             telefono,
-//             datosBancarios: []
-//         });
-//         if (!isVerified){
-//             res.status(400).json({ message: 'Datos bancarios no verificados' });
-//             return;
-//         }
-//         const sellerSaved = await newSeller.save();
-//         res.status(201).json(sellerSaved);
-//         return res.json(sellerSaved);
-        
-//     }catch(error){
-//         res.status(400).json({ message: error.message });
-//     }
-// });
-
 //FUNCION PARA GUARDAR DATOS TEMPORALES DEL VENDEDOR, LLENA UN FORMULARIO CON ESTOS DATOS DESDE LA
 //PAGINA DE REGISTRO DE VENDEDOR, DEBE ESTAR LOGEADO COMO USUARIO.
 //ESTA FUNCION GUARDA LOS DATOS TEMPORALES EN UNA COOKIE, PORQUE AL COMPLETAR OTRO FORM RECIEN SE GUARDA
@@ -81,12 +44,10 @@ const saveSellerDataTemp = asyncHandler(async (req, res) => {
         } 
 
    
-        //esto es nuevo
-        const token = jwt.sign(userDataTemp, process.env.JWT_SECRET);
-        //fin de lo nuevo
 
-        //SE GUARDA EL OBJETO EN UNA COOKIE, hay que revisar esto porque al parecer la cookie no se envia desde el cliente
-        //Al probar en postman si se guarda la cookie, pero desde el form no se guarda
+        const token = jwt.sign(userDataTemp, process.env.JWT_SECRET);
+
+        //SE GUARDA EL OBJETO EN UNA COOKIE, ESTO SE HACE PARA QUE LOS DATOS TEMPORALES NO SE PIERDAN
         res.cookie('userDataTemp', token, { httpOnly: true, secure: false});
         return res.status(200).json({ message: 'Datos guardados temporalmente', userDataTemp,token});
         
@@ -103,13 +64,7 @@ const saveSellerDataTemp = asyncHandler(async (req, res) => {
 const registerSellerBank = asyncHandler(async (req, res) => {
     const { nombreBanco, numeroCuenta, tipoCuenta, titularCuenta } = req.body;
     try {
-
-        //INTENTOS QUE NO FUNCIONARON
-        // const tempSellerData = req.cookies.userDataTemp ? JSON.parse(req.cookies.userDataTemp) : null;
-        //const tempSellerData = req.cookies.userDataTemp ? jwt.verify(req.cookies.userDataTemp, process.env.JWT_SECRET) : null;
-
-        //SE VERIFICA SI EL TOKEN DE LOS DATOS TEMPORALES ESTA EN LA COOKIE
-        //Como no trae la cookie, hay que revisar esto. Desde postman funciona.
+        //SE COMPRUEBA SI EL USUARIO HA COMPLETADO LOS DATOS TEMPORALES
         const token = req.cookies.userDataTemp;
         if (!token){
         return res.status(400).json({ message: 'Usuario no ha completado su info' });
@@ -133,25 +88,13 @@ const registerSellerBank = asyncHandler(async (req, res) => {
 
         //SE DEBE IMPLEMENTAR LA LOGICA DE VERIFICACION DE DATOS BANCARIOS, SE HARA MAS ADELANTE
 
-        //TOKEN
-        //const token = jwt.sign(userDataTemp, process.env.JWT_SECRET);
-        //fin de lo nuevo
-        //res.cookie('userDataTemp', token, { httpOnly: true });
-        //FIN TOKEN
         //Se guardan los datos bancarios
         const bankDetailsSaved = await newBankDetails.save();
         bankDetailsSaved.verificado = true;
         await bankDetailsSaved.save();
 
         
-        //ANTIGUA FORMA DE INGRESAR DATOS
-        // const newSeller = new Seller({
-        //     ...tempSellerData,
-        //     datosBancarios: [bankDetailsSaved._id]
-        // });
-
-
-        //NUEVA FORMA DE INGRESAR DATOS
+        //SE CREA UN OBJETO CON LOS DATOS DEL VENDEDOR
         const newSeller = new Seller({
             usuario: tempSellerData.usuario, // Asignar el ID del usuario vendedor
             nombre: tempSellerData.nombre,
@@ -181,21 +124,7 @@ const registerSellerBank = asyncHandler(async (req, res) => {
     }
 });
 
-// const sellProducts = asyncHandler(async (req, res) => {
-//     try {
-//         const seller = await Seller.findOne({ usuario: req.user._id});
-//         if (!seller) {
-//             return res.status(400).json({ message: 'Vendedor no encontrado' });
-//         }
-//         console.log('ya puedes vender tus productos');
-//         return res.json(seller);
-//     } catch (error) {
-//         console.error("Error en sellProducts:", error);
-//         return res.status(500).json({ message: 'Error al vender productos', error: error.message });
-//     }
-// });
-
-
+//FUNCION PARA VENDER PRODUCTOS, SE DEBE HABER REGISTRADO LOS DATOS BANCARIOS
 //NUEVO ENFOQUE CON USUARIO ES VENDEDOR
 const sellProducts = asyncHandler(async (req, res) => {
     try {
@@ -221,21 +150,21 @@ const sellProducts = asyncHandler(async (req, res) => {
 });
 
 
-//PARA VERIFICAR SI EL USUARIO ES VENDEDOR
+//PARA VERIFICAR SI EL USUARIO ES VENDEDOR, NO SE ESTA USANDO
 
-const authorizeSeller = asyncHandler(async (req, res, next) => {
-    try{
-        const user = await User.findById(req.user._id);
-        if(!user && !user.esVendedor){       
-            return res.status(401).json({ message: 'Usuario no autorizado' });
-        }            
-        return res.status(200).json({ message: 'Usuario autorizado' });
+// const authorizeSeller = asyncHandler(async (req, res, next) => {
+//     try{
+//         const user = await User.findById(req.user._id);
+//         if(!user && !user.esVendedor){       
+//             return res.status(401).json({ message: 'Usuario no autorizado' });
+//         }            
+//         return res.status(200).json({ message: 'Usuario autorizado' });
 
-    } catch (error) {
-        console.error("Error en authorizeSeller:", error);
-        return res.status(500).json({ message: 'Error al autorizar usuario vendedor', error: error.message });
-    } 
-});
+//     } catch (error) {
+//         console.error("Error en authorizeSeller:", error);
+//         return res.status(500).json({ message: 'Error al autorizar usuario vendedor', error: error.message });
+//     } 
+// });
     
 
 

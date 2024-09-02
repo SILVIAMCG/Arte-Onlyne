@@ -12,8 +12,6 @@ const Login = () => {
     const navigate = useNavigate();
     const {register, handleSubmit, formState: { errors },reset} = useForm();
     const [errorMessage, setErrorMessage] = useState('');
-
-    //PRUEBA
     const {loginUser} =useContext(userContext);
 
     

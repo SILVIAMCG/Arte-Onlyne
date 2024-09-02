@@ -55,7 +55,8 @@ const login = asyncHandler(async (req, res) => {
             return;
         }
         //Se crea un token con el id del usuario y se guarda en una cookie
-        jwt.sign({ id: isUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
+        //EN LA COOKIE SE AÑADIO EL CAMPO ES VENDEDOR PARA ACCEDER DESDE LA COOKIE
+        jwt.sign({ id: isUser._id, esVendedor: isUser.esVendedor}, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
             if (err) {
                 throw new Error(err);
             }
@@ -84,18 +85,18 @@ const logout = asyncHandler(async (req, res) => {
 });
 
 //ESTA FUNCION NO SE ESTA USANDO
-const profile = asyncHandler(async(req,res) => {
-    const user = await User.findById(req.user.id).select('-password');
-    if (!user) {
-        res.status(404).json({ message: 'Usuario no encontrado' });
-        return;
-    }
-    return res.json(user);
+// const profile = asyncHandler(async(req,res) => {
+//     const user = await User.findById(req.user.id).select('-password');
+//     if (!user) {
+//         res.status(404).json({ message: 'Usuario no encontrado' });
+//         return;
+//     }
+//     return res.json(user);
 
-});
+// });
 
 
 
-export { register, login, logout, profile};
+export { register, login, logout};
 
 

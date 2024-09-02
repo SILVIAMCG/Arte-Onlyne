@@ -27,13 +27,9 @@ const getProductById = asyncHandler(async(req, res) => {
 });
 
 
-
-
-
-
 const createProduct = asyncHandler(async (req, res) => {
-    //se saco imagen para probar upload image
-    const { nombre,categoria, descripcion, precio, stock, cantidad, creador, contacto} = req.body;
+    //se quito creador y contacto para que estos aparezcan cuando el usuario comprer el producto, se obtendran de seller
+    const { nombre,categoria, descripcion, precio, stock} = req.body;
     try{
         const sellerExists = await Seller.findOne({usuario : req.user._id});
         if (!sellerExists) {
@@ -46,18 +42,18 @@ const createProduct = asyncHandler(async (req, res) => {
             return;
         }
         const product = new Product({
-            // vendedor: req.user._id,
             usuario: sellerExists._id,
             nombre,
-            // imagen,
             categoria,
             descripcion,
             precio,
             stock,
-            cantidad,
-            creador,
-            contacto
+            // cantidad,
+            creador: sellerExists.nombre,
+            contacto: sellerExists.telefono
         });
+
+        //Si se sube una imagen, se guarda en cloudinary y se guarda la url y el public_id en la base de datos
 
         if (req.files.imagen) {
             const file = req.files.imagen;
@@ -66,7 +62,7 @@ const createProduct = asyncHandler(async (req, res) => {
                 public_id: result.public_id,
                 secure_url: result.secure_url
             }
-            await fs.unlink(file.tempFilePath);
+            await fs.unlink(file.tempFilePath); //Se elimina la imagen del servidor
             }
         const createdProduct = await product.save();
         res.status(201).json(createdProduct);
@@ -93,28 +89,7 @@ const createProduct = asyncHandler(async (req, res) => {
         }
     });
 
-    // const deleteProduct = asyncHandler(async (req, res) => {
-    //     try {
-    //         const product = await Product.findById(req.params.id); 
-    //         if (!product) {
-    //             res.status(404).json({ message: 'Producto no encontrado' });
-    //             return;
-    //         }
     
-    //         await product.delete(); 
-            
-    //         if (product.imagen) {
-    //             await deleteImage(product.imagen.public_id);
-    //         }
-    //         res.json({ message: 'Producto eliminado' });
-    //     } catch (error) {
-    //         res.status(500).json({ message: 'Error al eliminar el producto', error: error.message });
-    //     }
-    // });
-    
-
-
-
 export {
     getProducts,
     getProductById,

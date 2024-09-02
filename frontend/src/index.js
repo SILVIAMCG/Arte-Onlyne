@@ -33,6 +33,7 @@ const router = createBrowserRouter(
       <Route path="/carrito" element={<Cart />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Register />} />
+      
       <Route element={<ProtectedRoute />}>
         <Route path="/vender" element={<RegisterSeller />} />
         <Route path="/banco" element={<RegisterBank />} />

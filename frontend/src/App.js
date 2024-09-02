@@ -4,13 +4,14 @@ import Footer from './components/Footer';
 import {Outlet} from 'react-router-dom';
 import {DataProvider, UserProvider } from './components/context/DataContext';
 import { SellerProvider } from './components/context/SellerContext';
-import {SellProductProvider} from './components/context/ProductContext';
+import {SellProductProvider, IsSellerProvider} from './components/context/ProductContext';
 
 const App = () => {
   return (<>
   <DataProvider>
     <UserProvider>  
     <SellerProvider>
+    <IsSellerProvider>
       <SellProductProvider>
       <Header />
     <main className="py-3">
@@ -22,7 +23,8 @@ const App = () => {
       </Container>
     </main>
     <Footer />
-    </SellProductProvider>    
+    </SellProductProvider>
+    </IsSellerProvider>    
     </SellerProvider>
     </UserProvider> 
   </DataProvider> 

@@ -113,7 +113,7 @@ const Home = () => {
                         <strong>Garantía</strong>
                       </Card.Title>
                         <Card.Text as="div" className="text-center bg-secondary" variant="secondary">
-                        Si no estás conforme con tu producto, te devolvemos tu dinero.
+                        Vendedores verificados para generar confianza en tus compras.
                         </Card.Text>
                     </Card.Body>
                   </Card>

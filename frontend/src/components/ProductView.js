@@ -53,12 +53,12 @@ const ProductView = () => {
                 <ListGroup.Item>
                     Descripción: {product.descripcion}
                 </ListGroup.Item>
-                <ListGroup.Item>
+                {/* <ListGroup.Item>
                     Fabricado por: {product.creador}
                 </ListGroup.Item>
                 <ListGroup.Item>
                     Contacto: {product.contacto}
-                </ListGroup.Item>
+                </ListGroup.Item> */}
             </ListGroup>
             <Link className ="btn btn-primary my-3" to="/">Volver</Link>
         </Col>

@@ -10,14 +10,14 @@ export const userContext = createContext();
 //ESTA FUNCION ES PARA MANEJAR EL CONTEXTO DE LOS PRODUCTOS
 export const DataProvider = ({ children }) => {
     const [data, setData] = useState([]);
-    useEffect(() => {
+    useEffect(() => { //SE USA USE EFFECT PARA QUE SE MUESTREN AL CARGAR LA PAGINA
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:${port}/api/products`); //Aqui se puso la solicitud directamente, es la primera funcion que se hizo, las de usuario son diferentes
                 setData(response.data);
                 console.log(response.data);
             } catch (error) {
-                console.error("Error fetching products:", error);
+                console.error("Error obteniendo productos:", error);
             }
         };
         fetchData();
@@ -40,19 +40,8 @@ export const UserProvider = ({ children }) => {
     const [isLogged, setIsLogged] = useState(false); //Esta variable es para verificar si esta logeado en el form login
     const [token, setToken] = useState(null)
 
-//ANTIGUO FETCHUSER
-    // const fetchUser = async (user) => {
-    //     try {
-    //         const response = await registerRequest(user);            
-    //         setUser(response.data);
-    //         setIsAuthenticated(true);
-    //     } catch (error) {
-    //         console.error("Error fetching user:", error);
-    //         setError(error);
-    //     }
-    // };
 
-    //NUEVO FETCHUSER
+    //NUEVO FETCHUSER PARA REGISTRAR USUARIO
     const fetchUser = async (user) => {
         try {
             const fetchedUser = await registerRequest(user); // El registerRequest viene de api/auth.js               
@@ -66,19 +55,8 @@ export const UserProvider = ({ children }) => {
         }
     };
 
-    //ESTA ES UNA PRUEBA PARA VER SI SE PUEDE MANTENER LA SESION INICIADA, FUNCIONA
-    // useEffect(() => {
-    //     const savedToken = localStorage.getItem('token');
-    //     console.log('Token desde context',savedToken);
-    //     if (savedToken) {
-    //         setToken(savedToken);
-    //         setIsAuthenticated(true);
-    //     }
-    // }, []);
-
-
+    
     //FUNCION PARA CHEQUEAR TOKEN
-
 
     const checkAuthToken = () => {
         console.log('Funcion checkOut se ejecuta');
@@ -86,21 +64,17 @@ export const UserProvider = ({ children }) => {
         console.log('Token desde context', savedToken); 
         if (savedToken) {
             setIsAuthenticated(true);
-            setIsLogged(true); // Ajusta según sea necesario
+            setIsLogged(true); //Si hay token, esta logeado
         }
     };
     
-    // useEffect(() => {
-    //     checkAuthToken();
-    // }, []);
-    //FIN PRUEBA
-
+   
     //FUNCION PARA EL LOGIN
     const loginUser = async (credentials) => {
         try {
             const response = await loginRequest(credentials);
             const data = response.data;
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('token', data.token); //GUARDA EL TOKEN EN LOCALSTORAGE
             setUser(data.user);
             if (data.user) {
                 setIsLogged(true);

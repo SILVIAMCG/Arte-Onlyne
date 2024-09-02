@@ -10,7 +10,6 @@ export const SellerProvider = ({ children }) => {
     const [sellerBankInfo, setSellerBankInfo] = useState(null);
     const [error, setError] = useState(null);
     const [isCompleted, setIsCompleted] = useState(false);
-    //ESTA ES PARA PROBAR EN EL CONTEXT SI PUEDE VENDER
     const [accessSeller, setAccessSeller] = useState(false);
 
     

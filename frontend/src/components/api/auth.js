@@ -8,13 +8,11 @@ const port = process.env.PORT || 5000;
 
 const api= `http://localhost:${port}/api`;
 
-// export const registerRequest = (user) => axios.post(`${api}/authuser`,user);
-
 export const registerRequest = async(user) =>{
     console.log('user from registerRequest', user)
     try{
         const response = await axios.post(`${api}/authuser`, user);
-        
+        //ESTOS SON PARA PROBAR QUE SE ESTA RECIBIENDO LA RESPUESTA
         console.log('Respuesta completa desde registerRequest', response);
         console.log('Datos desde response.data', response.data);
         console.log('Usuario desde response.data.user', response.data.user);

@@ -1,11 +1,10 @@
 import {Navbar, Nav, Container} from 'react-bootstrap';
 import {FaSalesforce, FaShoppingCart, FaUser} from 'react-icons/fa';
 import {LinkContainer} from 'react-router-bootstrap';
-import {loginRequest, logoutRequest} from './api/auth.js';
 import {useState, useEffect, useContext} from 'react';
 import { userContext } from './context/DataContext';
 import { sellerContext } from './context/SellerContext.js';
-import { sellProductContext } from './context/ProductContext.js';
+import { IsSellerContext, sellProductContext } from './context/ProductContext.js';
 import {useNavigate} from 'react-router-dom';
 
 
@@ -15,11 +14,18 @@ const Header = () => {
     //AQUI SE HICIERON VARIAS PRUEBAS PARA PODER CAMBIAR LA BARRA DE NAVEGACION DEPENDIENDO DE SI ESTA LOGEADO EL USUARIO
     //Y ADEMAS PARA QUE PUEDA ACCEDER AL FORMULARIO DE REGISTRO DEL VENDEDOR SI ESTA LOGEADO, Y SI NO NO
     const { isLogged, loginUser, logoutUser, isAuthenticated } = useContext(userContext);
-    const { permitSeller, isSeller } = useContext(sellProductContext);
+    const {isSeller, permitSeller} = useContext(IsSellerContext);
+    const { uploadProduct } = useContext(sellProductContext);
     const { sellerInfo, isCompleted } = useContext(sellerContext);
     const navigate = useNavigate();
 
-
+    //ESTO VERIFICA SI EL USUARIO ES VENDEDOR, VIENE DE PRODUCT CONTEXT
+    useEffect(() => {
+        if (isAuthenticated) {
+            isSeller(); 
+        }
+    }, [isAuthenticated]);
+    
     
 
     //Para cuando el usuario cierre sesion
@@ -39,44 +45,17 @@ const Header = () => {
         navigate('/vender');
     };
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            isSeller();
-        }
-    }, [isAuthenticated, isSeller]);
-
-
 
     const handleUploadProductClick = () => {
-        console.log('permit seller desde el header', permitSeller);
         navigate('/misproductos');
     };
-    //ESTAS SON PRUEBAS, POR EL MOMENTO NO SE ESTAN USANDO
-    // const handleSellerData = async() => {
-    //     try{
-    //        await navigate('/vender');
-    //     }catch (error){
-    //         console.error("Error registrando datos de vendedor:", error);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     console.log("useEffect isLogged called");
-    //     isLogged();
-    // }, []);
-
-    // useEffect(() => {
-    //     console.log("Logged state changed:", logged); 
-    // }, [logged]);
-
-
+    
   return (
     <header>
         <Navbar className="custom-navbar bg-primary" variant="primary" expand="lg" collapseOnSelect>
             <Container>
                 <LinkContainer to="/">
                 <Navbar.Brand className= "navbar-brand">
-                {/* <img src={logo} alt="logo" className="logo me-3" />    */}
                 <img src="/img/logo.png" alt="logo" className="logo me-3" />   
                 ArteOnlyne</Navbar.Brand>
                 </LinkContainer>
@@ -104,22 +83,6 @@ const Header = () => {
                                 </LinkContainer>
                             )}
 
-                        {/* Si el usuario esta logeado, se muestra el formulario de ingresar datos de vendedor, si no, el login        
-                                                 */}  
-                        {/* {isLogged ? (
-                                <LinkContainer to="/vender">
-                                    <Nav.Link>
-                                        <FaUser /> Vende con nosotros
-                                    </Nav.Link>
-                                </LinkContainer>
-                            ) : (
-                                <LinkContainer to="/login">
-                                    <Nav.Link>
-                                        <FaUser /> Vende con nosotros
-                                    </Nav.Link>
-                                </LinkContainer>
-                            )}              
-                                                   */}
                         {isLogged && permitSeller ?(
                             <Nav.Link onClick={handleUploadProductClick}>
                                 <FaUser /> Mis Productos

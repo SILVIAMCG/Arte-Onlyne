@@ -13,9 +13,7 @@ export const sellerRequest = async (data) => {
         //recibe el token
         const token = localStorage.getItem('token');
         console.log("token desde seller request",token);
-        //hace la solicitud a la ruta, hay que revisar esto porque aca puede haber un problema
-        //ya que la cookie no se envia desde el cliente, aunque el error lo da en el middleware 
-        //cookie verification
+        //hace la solicitud a la ruta
         const response = await axios.post(`${api}/authuser/vender`,data,
             {
             withCredentials: true,
@@ -25,7 +23,6 @@ export const sellerRequest = async (data) => {
         }); 
         
         console.log("Response from sellerRequest:", response); // Verifica la respuesta completa
-        console.log("Data from response:", response.data);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -53,7 +50,6 @@ export const sellerBankRequest = async (data) => {
             withCredentials: true,
         }); 
         console.log("Response from sellerBankRequest:", response); // Verifica la respuesta completa
-        console.log("Data from response:", response.data);
         return response.data;
     } catch (error) {
         console.error("Error en la solicitud del banco del vendedor:", error);

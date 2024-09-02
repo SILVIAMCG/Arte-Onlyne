@@ -1,5 +1,5 @@
 import express from 'express';
-import {register,login,logout,profile} from '../controllers/authController.js';
+import {register,login,logout} from '../controllers/authController.js';
 import { saveSellerDataTemp,registerSellerBank, sellProducts} from '../controllers/sellerController.js';
 
 //ESTOS SE MUEVEN A PRODUCT ROUTES
