@@ -1,5 +1,5 @@
 import express from 'express';
-import { createProduct } from '../controllers/productController.js';
+import { createProduct, deleteProduct, updateProduct } from '../controllers/productController.js';
 import { loginValidation, authorizeSeller } from '../middleware/validationMw.js';
 import fileUpload from 'express-fileupload';
 
@@ -16,5 +16,17 @@ router.route('/')
     }), 
     createProduct
   ); // Crear producto, solo para vendedores
+
+  router.route('/:id').delete(deleteProduct); // Borrar producto, solo para vendedores
+  router.route('/:id')
+    .put(
+      loginValidation, 
+      authorizeSeller, 
+      fileUpload({
+        useTempFiles: true,
+        tempFileDir: './uploads'
+      }), updateProduct); // Modificar producto por ID
+
+
 
 export default router;

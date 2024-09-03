@@ -89,10 +89,51 @@ const createProduct = asyncHandler(async (req, res) => {
         }
     });
 
+
+
+    const updateProduct = asyncHandler(async (req, res) => {
+        const { nombre, categoria, descripcion, precio, stock} = req.body;
+        try {
+            let product = await Product.findById(req.params.id);
+            if (!product) {
+                res.status(404).json({ message: 'Producto no encontrado' });
+                return;
+            }
+            if (req.files && req.files.imagen) {
+                if (product.imagen && product.imagen.public_id) {
+                    await deleteImage(product.imagen.public_id);
+                }
+                const file = req.files.imagen;
+                const result = await uploadImage(file.tempFilePath, req.user._id);
+                product.imagen = {
+                    public_id: result.public_id,
+                    secure_url: result.secure_url
+                };
+                await fs.unlink(file.tempFilePath);
+            }
+            
+
+            const data = {
+                nombre: nombre || product.nombre,
+                categoria: categoria || product.categoria,
+                descripcion: descripcion || product.descripcion,
+                precio: precio || product.precio,
+                stock: stock || product.stock,
+                imagen: product.imagen
+            };
+            product = await Product.findByIdAndUpdate(req.params.id, data, { new: true });
+            res.json(product);            
+
+        } catch (error) {
+            res.status(500).json({ message: 'Error al actualizar el producto', error: error.message });
+        }
+    });
+
     
 export {
     getProducts,
     getProductById,
     createProduct,
-    deleteProduct
+    deleteProduct,
+    updateProduct
 };
