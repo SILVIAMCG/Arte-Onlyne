@@ -25,7 +25,7 @@ const ProductView = () => {
     const {id:productId} = useParams();
     const product = products.find(p => p._id === productId);
     console.log(product);
-    const cantidad = Array.from({ length: product.countInStock }, (_, index) => ({
+    const cantidad = Array.from({ length: product.stock }, (_, index) => ({
         label: (index + 1).toString(),
         value: (index + 1).toString()
     }));
