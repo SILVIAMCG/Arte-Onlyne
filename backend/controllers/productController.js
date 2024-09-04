@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
 import Seller from '../models/sellerModel.js';
 import { uploadImage, deleteImage } from '../utils/cloudinary.js';
+import jwt from 'jsonwebtoken';
 import fs from 'fs-extra';
 
 //ESTE ARCHIVO ES PARA TRAER PRODUCTOS, POR AHORA LOS PRODUCTOS FUERON INGRESADOS COMO MUESTRA
@@ -26,6 +27,26 @@ const getProductById = asyncHandler(async(req, res) => {
     }
 });
 
+const getProductByUserId = asyncHandler(async(req, res) => {
+    const token = req.cookies.token; 
+    if (!token) {
+        res.status(400).json({ message: 'Token no encontrado en la cookie' });
+        return;
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.id;
+
+    const seller = await Seller.findOne({ usuario: userId });
+
+
+    const product = await Product.find({usuario: seller._id });
+    if(product){
+       return res.json(product);
+    }else{
+        res.status(404);
+        throw new Error('Producto no encontrado');
+    }
+});
 
 const createProduct = asyncHandler(async (req, res) => {
     //se quito creador y contacto para que estos aparezcan cuando el usuario comprer el producto, se obtendran de seller
@@ -133,6 +154,7 @@ const createProduct = asyncHandler(async (req, res) => {
 export {
     getProducts,
     getProductById,
+    getProductByUserId,
     createProduct,
     deleteProduct,
     updateProduct

@@ -11,6 +11,7 @@ const router = express.Router();
 
 router.route('/').get(getProducts);
 router.route('/:id').get(getProductById);
+
 // router.route('/:id').delete(deleteProduct);
 
 //ESTO VIENE DE AUTH ROUTES, Y AHORA FUE MOVIDO A SELLER ROUTES

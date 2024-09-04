@@ -1,5 +1,5 @@
 import express from 'express';
-import { createProduct, deleteProduct, updateProduct } from '../controllers/productController.js';
+import { createProduct, deleteProduct, updateProduct, getProductByUserId } from '../controllers/productController.js';
 import { loginValidation, authorizeSeller } from '../middleware/validationMw.js';
 import fileUpload from 'express-fileupload';
 
@@ -26,6 +26,8 @@ router.route('/')
         useTempFiles: true,
         tempFileDir: './uploads'
       }), updateProduct); // Modificar producto por ID
+
+    router.route('/user').get(getProductByUserId);
 
 
 

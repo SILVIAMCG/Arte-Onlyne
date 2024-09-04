@@ -16,8 +16,8 @@ const ProtectedRoute = ({children}) => {
   } 
 
   //ESTO SE HIZO PARA PROBAR Y NO FUNCIONO
-  // if (permitSeller) {
-  //   return <Navigate to="/misproductos" />;
+  // if (!permitSeller) {
+  //   return <Navigate to="/vender" />;
   // } 
   // if (!sellProductContext){
   //   console.log('No funciona sellProductContext');  
