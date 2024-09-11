@@ -8,8 +8,6 @@ import { IsSellerContext, sellProductContext } from './context/ProductContext.js
 import {useNavigate} from 'react-router-dom';
 
 
-
-
 const Header = () => {
     //AQUI SE HICIERON VARIAS PRUEBAS PARA PODER CAMBIAR LA BARRA DE NAVEGACION DEPENDIENDO DE SI ESTA LOGEADO EL USUARIO
     //Y ADEMAS PARA QUE PUEDA ACCEDER AL FORMULARIO DE REGISTRO DEL VENDEDOR SI ESTA LOGEADO, Y SI NO NO
@@ -25,7 +23,6 @@ const Header = () => {
             isSeller(); 
         }
     }, [isAuthenticated]);
-    
     
 
     //Para cuando el usuario cierre sesion
@@ -62,7 +59,6 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">
-
                         <LinkContainer to="/carrito">
                         <Nav.Link>
                             <FaShoppingCart /> Carrito
@@ -71,7 +67,6 @@ const Header = () => {
                      </LinkContainer>
                             {isLogged ?(
                                 <Nav.Link onClick={handleLogged}>
-
                                     <FaUser /> Cerrar Sesión
                                 </Nav.Link>
                             ) 

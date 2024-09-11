@@ -44,7 +44,7 @@ const ProductForm = () => {
         <Row className="justify-content-md-center">
             <Col xs={12} md={6}>
                 <Card className="my-5 p-3">
-                    <h2 className="text-center">Completa tus datos</h2>
+                    <h2 className="text-center">Completa las características del producto</h2>
                     
                     <Form className = "form" onSubmit = {handleSubmit(onSubmit)}>
                     <Form.Group className="mb-3" controlId="formBasicName">

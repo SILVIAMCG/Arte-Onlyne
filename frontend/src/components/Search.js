@@ -14,11 +14,6 @@ const categories = [
   {label: 'Otros' , value : 'Otros'},
 ]
 
-
-// const Search = () => {
-//     const handleSelect = ({value}) => {
-//         console.log(value)
-//     }
 const Search = ({ onCategorySelect }) => {
   const handleSelect = (selectedOption) => {
     onCategorySelect(selectedOption ? selectedOption.value : '');

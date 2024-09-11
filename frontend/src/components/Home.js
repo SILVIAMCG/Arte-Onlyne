@@ -52,12 +52,6 @@ const Home = () => {
         </h1>
         <Container>
             <Row>
-              {/* esto esta importado del componente Product, se recorre el array para mostrar cada producto */}
-                {/* {products.map(product => (
-                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                    <Product product={product} />
-                </Col>
-                ))} */}
                 {filteredProducts.map((product) => (
                 <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                   <Product product={product} />

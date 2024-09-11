@@ -52,10 +52,8 @@ app.get('/', (req, res) => {
 
 //las rutas vienen de productRoutes
 app.use('/api/products', productRoutes);
-//PRUEBA PARA MIS PRODUCTOS DESDE PRODUCT ROUTES
 
-//ESTA SE COMENTO PARA ARREGLAR CONFUSION ENTRE PRODUCTS Y EL FORM
-// app.use('/api/misproductos', productRoutes);
+//MIS PRODUCTOS DESDE PRODUCT ROUTES
 app.use('/api/misproductos', sellerRoutes);
 
 //las rutas vienen de authRoutes
@@ -65,12 +63,9 @@ app.use('/api/logout', authRoutes);
 app.use('/api/vender', authRoutes);
 app.use('/api/banco', authRoutes);
 
-
-
 //middleware para errores
 app.use(notFound);
 app.use(errorHandler);
-
 
 //escucho en el puerto 5000
 app.listen(port, () => {

@@ -20,14 +20,6 @@ const Product = ({product}) => {
                     <strong>{product.nombre}</strong>
                 </Card.Title>
             </Link>
-
-            {/* //NO SE UTILIZA EL RATING */}
-
-            {/* <Card.Text as="div"> */}
-                {/* se importa el componente rating que contiene las estrellas y el numero de reviews */}
-                {/* <Rating value={product.rating} text={`${product.numReviews} reviews`} />
-            </Card.Text> */}
-
             <Card.Text as="h3">
             {`$${product.precio.toLocaleString('es-ES')}`}
             </Card.Text>
@@ -35,5 +27,14 @@ const Product = ({product}) => {
     </Card>
   )
 }
+
+
+{/* //NO SE UTILIZA EL RATING */}
+
+            {/* <Card.Text as="div"> */}
+                {/* se importa el componente rating que contiene las estrellas y el numero de reviews */}
+                {/* <Rating value={product.rating} text={`${product.numReviews} reviews`} />
+            </Card.Text> */}
+
 
 export default Product

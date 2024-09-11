@@ -3,6 +3,18 @@ import axios from 'axios';
 const port = process.env.PORT || 5000;
 const api= `http://localhost:${port}/api`;
 
+//PRUEBA PARA MOSTRAR PRODUCTOS
+export const getProductDetail = async (id) => {
+    try {
+        //se hace la llamada a la api con el id del producto
+        const response = await axios.get(`${api}/products/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching product:", error);
+        throw error;
+    }
+};
+
 
 //NUEVO UPLOAD PRODUCT FUNCIONAL 
 export const uploadProductRequest = async (productData) => {
