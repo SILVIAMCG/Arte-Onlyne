@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useContext} from "react";
-import { uploadProductRequest, getProductDetail } from "../api/products";
+import { uploadProductRequest, getProductDetail, getProductFromSeller } from "../api/products";
 import { sellerContext} from "./SellerContext.js";
 import {jwtDecode} from 'jwt-decode';
 
@@ -7,6 +7,7 @@ import {jwtDecode} from 'jwt-decode';
 export const IsSellerContext = createContext();
 export const sellProductContext = createContext();
 export const getProductDetailContext = createContext();
+export const getProductFromSellerContext = createContext();
 
 //SE VOLVIO A PONER EL IS SELLER COMO PROVIDER, PARA VERIFICAR AL VENDEDOR EN EL FORMULARIO DE SUBIDA DE PRODUCTOS
  export const IsSellerProvider = ({ children }) => {
@@ -66,7 +67,32 @@ export const getProductDetailContext = createContext();
             {children}
         </getProductDetailContext.Provider>
     );
- }
+ };
+
+
+ //PRUEBA PARA TRAER PRODUCTOS DE UN SOLO VENDEDOR
+ export const GetProductFromSellerProvider = ({ children }) => {
+    const [productsFromSeller, setProductsFromSeller] = useState([]);
+    const myProducts = async () => {
+        try {
+            const products = await getProductFromSeller(); 
+            setProductsFromSeller(products);
+            return products;
+        } catch (error) {
+            console.error("Error obteniendo productos del vendedor:", error);
+            return null;
+        }
+    };
+    return (
+        <getProductFromSellerContext.Provider value={{ myProducts, productsFromSeller }}>
+            {children}
+        </getProductFromSellerContext.Provider>
+    );
+ };
+
+
+
+ //FIN PRUEBA
 
 export const SellProductProvider = ({ children }) => {
 

@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.route('/')
 //PARA QUE EL PRODUCTO SUBA LA IMAGEN SOLO SI SE EJECUTA LA FUNCION DE CREAR PRODUCTO
+  .get(loginValidation, authorizeSeller, getProductByUserId)
   .post(
     loginValidation, 
     authorizeSeller, 
@@ -27,7 +28,7 @@ router.route('/')
         tempFileDir: './uploads'
       }), updateProduct); // Modificar producto por ID
 
-    router.route('/user').get(getProductByUserId);
+
 
 
 
