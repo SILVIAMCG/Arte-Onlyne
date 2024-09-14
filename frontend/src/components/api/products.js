@@ -15,6 +15,21 @@ export const getProductDetail = async (id) => {
     }
 };
 
+export const getProductFromSeller = async () => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await axios.get(`${api}/misproductos`, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'authorization': `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error obteniendo productos del vendedor:", error);
+        throw error;
+    }};
+
 
 //NUEVO UPLOAD PRODUCT FUNCIONAL 
 export const uploadProductRequest = async (productData) => {

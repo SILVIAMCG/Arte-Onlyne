@@ -1,20 +1,51 @@
 
 import { useContext, useState, useEffect } from 'react';
-import { sellProductContext } from './context/ProductContext';
+import { sellProductContext,getProductFromSellerContext } from './context/ProductContext';
 import React from 'react';
-import {Container, Row, Col, Card, Form, Button} from 'react-bootstrap';
+import {Container, Row, Col, Card, Form, Button, ListGroup, Table, Image, ListGroupItem} from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
+import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import moment from 'moment';
 
 
 
 
 const ProductForm = () => {
 
+  const {myProducts, productsFromSeller} = useContext(getProductFromSellerContext);
+
   const {register, handleSubmit, formState: { errors },reset} = useForm();
   const [errorMessage, setErrorMessage] = useState('');   
   const { uploadProduct } = useContext(sellProductContext);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+
+ useEffect(() => {
+    const fetchMyProducts = async () => {
+        setLoading(true);
+        await myProducts();
+    };
+    fetchMyProducts();
+   }, [myProducts]);
+
+   useEffect(() => {
+    //si el producto ya esta cargado, se cambia el estado de loading
+    if (productsFromSeller) {
+        setLoading(false); 
+    }
+}, [productsFromSeller]);
+
+
+if (loading) {
+    return <p>Cargando productos...</p>;
+}
+
+
+if (!productsFromSeller) {
+    return <p>Aún no tienes productos publicados</p>;
+}
 
   const onSubmit = async (data) => {
     const productData = {
@@ -40,7 +71,73 @@ const ProductForm = () => {
     };
 
   return (
-    <Container>
+     <Container>
+        <h2 className="text-center">Mis productos en venta</h2>
+        <ListGroup variant="flush">
+            {productsFromSeller.map((product) => (
+                // return(
+                 <ListGroupItem key={product._id} className="py-2 px-3">
+                    <Row className="align-items-center">
+                        <Col md={2}>
+                        <div className="image-container" style={{ maxWidth: '100px', maxHeight: '100px', overflow: 'hidden' }}>
+                            <Image src={product.imagen.secure_url} alt={product.nombre} fluid rounded/>
+                        </div>
+                        </Col>
+
+                        <Col md={3}>
+                            <p className='text-sm-center'>{product.nombre}</p>
+                        </Col>
+
+                        <Col md={3}>
+                            <p className='text-sm-center'>{product.createdAt ? moment(product.createdAt).format('DD/MM/YYYY') : "Fecha no disponible"}</p>
+                        </Col>
+
+                        <Col md={4}>
+                        <div className="d-flex justify-content-center justify-content-md-start gap-4">
+                        <Button variant="success" className="d-flex align-items-center">
+                            <FaPencilAlt className="me-2" />
+                            Editar
+                        </Button>
+                        
+                        <Button variant="danger" className="d-flex align-items-center">
+                            <FaTrashAlt className="me-2" />
+                            Eliminar
+                        </Button>
+                        </div>
+                        </Col>
+                    </Row>
+                 </ListGroupItem>
+
+
+
+                
+            ))};
+        </ListGroup>
+
+
+
+{/* <Table striped bordered hover responsive className = "table-sm">
+                                    <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {productsFromSeller.map((product) => {
+                        return (
+                            <tr key={product._id} variant="flush">
+                                <td><Image src={product.imagen.secure_url} alt={product.nombre} className="img-fluid" style={{ maxWidth: '100px', height: 'auto' }}/></td>                                
+                                <td>{product.nombre}</td>                                
+                            </tr>
+                        );
+                    })}
+                    </tbody>
+                </Table>
+
+ */}
+
         <Row className="justify-content-md-center">
             <Col xs={12} md={6}>
                 <Card className="my-5 p-3">

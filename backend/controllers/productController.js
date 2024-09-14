@@ -27,26 +27,48 @@ const getProductById = asyncHandler(async(req, res) => {
     }
 });
 
+// const getProductByUserId = asyncHandler(async(req, res) => {
+//     const token = req.cookies.token; 
+//     if (!token) {
+//         res.status(400).json({ message: 'Token no encontrado en la cookie' });
+//         return;
+//     }
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     const userId = decoded.id;
+
+//     const seller = await Seller.findOne({ usuario: userId });
+
+
+//     const products = await Product.find({usuario: seller._id });
+//         if (products && products.length > 0) {
+//             return res.json(products);
+//         } else {
+//             res.status(404).json({ message: 'No se encontraron productos para este vendedor' });
+//         }
+//     });
+
+//NUEVA FUNCION PARA OBTENER PRODUCTOS DEL VENDEDOR
 const getProductByUserId = asyncHandler(async(req, res) => {
-    const token = req.cookies.token; 
-    if (!token) {
-        res.status(400).json({ message: 'Token no encontrado en la cookie' });
-        return;
-    }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded.id;
+    try{
+        const seller = await Seller.findOne({usuario: req.user._id});
+        if(!seller){
+            res.status(404).json({ message: 'Vendedor no encontrado' });
+            return;
+        }
+        const products = await Product.find({usuario: seller._id});
+        if(!products){
+            res.status(404).json({ message: 'No se encontraron productos para este vendedor' });
+            return;
+        }
+        if(products && products.length > 0){
+            return res.json(products)
+        }
 
-    const seller = await Seller.findOne({ usuario: userId });
-
-
-    const product = await Product.find({usuario: seller._id });
-    if(product){
-       return res.json(product);
-    }else{
-        res.status(404);
-        throw new Error('Producto no encontrado');
+    }catch(error){
+        res.status(500).json({ message: 'Error al obtener productos', error: error.message });
     }
 });
+//FIN NUEVA FUNCION
 
 const createProduct = asyncHandler(async (req, res) => {
     //se quito creador y contacto para que estos aparezcan cuando el usuario comprer el producto, se obtendran de seller
