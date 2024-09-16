@@ -4,12 +4,14 @@ import Footer from './components/Footer';
 import {Outlet} from 'react-router-dom';
 import {DataProvider, UserProvider } from './components/context/DataContext';
 import { SellerProvider } from './components/context/SellerContext';
+import { CartProvider } from './components/context/CartContext';
 import {SellProductProvider, IsSellerProvider, GetProductDetailProvider, GetProductFromSellerProvider} from './components/context/ProductContext';
 
 const App = () => {
   return (<>
   <DataProvider>
     <GetProductDetailProvider>
+    <CartProvider>
     <UserProvider>  
     <SellerProvider>
     <IsSellerProvider>
@@ -30,6 +32,7 @@ const App = () => {
     </IsSellerProvider>    
     </SellerProvider>
     </UserProvider> 
+    </CartProvider>
   </GetProductDetailProvider>
   </DataProvider> 
   </>    

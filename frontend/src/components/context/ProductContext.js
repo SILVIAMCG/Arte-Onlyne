@@ -83,12 +83,19 @@ export const getProductFromSellerContext = createContext();
             return null;
         }
     };
+
+    const emptyProducts = () => { 
+        setProductsFromSeller([]);
+     };
+
     return (
-        <getProductFromSellerContext.Provider value={{ myProducts, productsFromSeller }}>
+        <getProductFromSellerContext.Provider value={{ myProducts, productsFromSeller, emptyProducts }}>
             {children}
         </getProductFromSellerContext.Provider>
     );
  };
+
+
 
 
 
@@ -104,6 +111,8 @@ export const SellProductProvider = ({ children }) => {
         try{    
             const uploadedProduct = await uploadProductRequest(productData);
             setProducts([...products, uploadedProduct]);
+            //POSIBLE SOLUCION A LA RECARGA DE PAGINA
+            //setProducts((prevProducts) => [...prevProducts, uploadedProduct]);
             return uploadedProduct;
             
         } catch (error) {

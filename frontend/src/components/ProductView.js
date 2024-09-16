@@ -8,6 +8,7 @@ import Select from 'react-select';
 import {useContext, useState, useEffect} from 'react';
 import {dataContext} from './context/DataContext';
 import { getProductDetailContext } from './context/ProductContext';
+import { cartContext } from './context/CartContext';
 
 
 
@@ -37,9 +38,11 @@ import { getProductDetailContext } from './context/ProductContext';
 
 
     //ESTO ES LO NUEVO
+    const {dispatch} = useContext(cartContext); 
     const { id: productId } = useParams(); // Obtén el ID del producto de los parámetros de la URL
     const { getOneProduct, productDetail } = useContext(getProductDetailContext); // Accede al contexto
     const [loading, setLoading] = useState(true); // Estado de carga
+    const [selectedQty, setSelectedQty] = useState(1); 
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -76,7 +79,7 @@ import { getProductDetailContext } from './context/ProductContext';
     }));
 
     const handleSelect = ({ value }) => {
-        console.log(productDetail.imagen); 
+        setSelectedQty(Number(value));
     };
 
     //NOTA, EN EL COMPONENTE, SE CAMBIO EL PRODUCT POR PRODUCTDETAIL, YA QUE SE ESTA USANDO EL PRODUCTDETAIL
@@ -139,7 +142,9 @@ import { getProductDetailContext } from './context/ProductContext';
                     </ListGroup.Item>
                     <ListGroup.Item>
                         {/* si el producto no esta disponible, o sea es 0, se deshabilita el boton */}
-                        <Button className="btn-block" type="button" disabled={productDetail.stock === 0}>
+                        <Button className="btn-block" type="button" disabled={productDetail.stock === 0} onClick={()=>dispatch(
+                            {type: 'ADD_TO_CART',product: {...productDetail, selectedQty}}
+                        )}>
                             Añadir al Carrito
                         </Button>
                     </ListGroup.Item>

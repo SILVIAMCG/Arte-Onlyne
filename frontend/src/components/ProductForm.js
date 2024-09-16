@@ -6,6 +6,7 @@ import {Container, Row, Col, Card, Form, Button, ListGroup, Table, Image, ListGr
 import { Link, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 import moment from 'moment';
 
 
@@ -14,7 +15,7 @@ import moment from 'moment';
 const ProductForm = () => {
 
   const {myProducts, productsFromSeller} = useContext(getProductFromSellerContext);
-
+  const navigate = useNavigate();
   const {register, handleSubmit, formState: { errors },reset} = useForm();
   const [errorMessage, setErrorMessage] = useState('');   
   const { uploadProduct } = useContext(sellProductContext);
@@ -44,7 +45,7 @@ if (loading) {
 
 
 if (!productsFromSeller) {
-    return <p>Aún no tienes productos publicados</p>;
+    return <h2>Aún no tienes productos publicados</h2>;
 }
 
   const onSubmit = async (data) => {
@@ -55,10 +56,19 @@ if (!productsFromSeller) {
 
 
     const uploadedProduct = await uploadProduct(productData);
+    try{
     if (uploadedProduct) {
-        reset(); 
+        showAlert();
+        navigate('/');
+        reset();
+        setErrorMessage(''); 
         }
-    };
+    } catch (error) {
+        console.error("Error subiendo producto:", error);
+        setErrorMessage("Error subiendo producto");
+        reset();
+    }
+};
     
 
     const handleImageChange = (event) => {
@@ -70,9 +80,30 @@ if (!productsFromSeller) {
         setErrorMessage(''); 
     };
 
+    const showAlert = ()=>{Swal.fire({
+        icon: "success",
+        title: "¡Felicitaciones!",
+        text: "Tu producto ya se encuentra publicado",        
+      });
+
+    }
+
   return (
      <Container>
-        <h2 className="text-center">Mis productos en venta</h2>
+        {/* {productsFromSeller.length > 0 ? <h2 className="text-center">Mis productos en venta</h2>
+         : <h2 className="text-center">Aún no tienes productos en venta</h2>} */}
+         <Row>
+            <Col>
+                <div className="bg-secondary text-dark py-3">
+                    {productsFromSeller.length > 0 ? (
+                        <h2 className="text-center">Mis productos en venta</h2>
+                    ) : (
+                        <h2 className="text-center">Aún no tienes productos en venta</h2>
+                    )}
+                </div>
+            </Col>
+        </Row>
+        
         <ListGroup variant="flush">
             {productsFromSeller.map((product) => (
                 // return(
@@ -111,7 +142,7 @@ if (!productsFromSeller) {
 
 
                 
-            ))};
+            ))}
         </ListGroup>
 
 

@@ -108,7 +108,7 @@ export const UserProvider = ({ children }) => {
 
     return (
         //ESTE CONTEXT SE USA EN INDEX.JS
-        <userContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, isLogged, setIsLogged, fetchUser, loginUser, logoutUser,token}}>
+        <userContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, isLogged, setIsLogged, fetchUser, loginUser, logoutUser,token, checkAuthToken}}>
             {children}
         </userContext.Provider>
     );
