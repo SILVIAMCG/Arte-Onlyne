@@ -51,3 +51,34 @@ export const uploadProductRequest = async (productData) => {
         throw error;
     }
 };
+
+export const updateProductRequest = async (id, productData) => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await axios.put(`${api}/misproductos/${id}`, productData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error updating product:", error);
+        throw error;
+    }
+};
+
+export const deleteProductRequest = async (id) => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await axios.delete(`${api}/misproductos/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting product:", error);
+        throw error;
+    }
+};

@@ -1,5 +1,5 @@
 import express from 'express';
-import {getProducts, getProductById, deleteProduct} from '../controllers/productController.js';
+import {getProducts, getProductById, updateProduct, deleteProduct} from '../controllers/productController.js';
 
 //ESTOS VENIAN DE AUTH ROUTES
 // import { createProduct} from '../controllers/productController.js';
@@ -11,6 +11,8 @@ const router = express.Router();
 
 router.route('/').get(getProducts);
 router.route('/:id').get(getProductById);
+router.route('/:id').put(updateProduct);
+router.route('/:id').delete(deleteProduct);
 
 // router.route('/:id').delete(deleteProduct);
 

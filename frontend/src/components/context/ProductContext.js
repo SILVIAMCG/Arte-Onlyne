@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useContext} from "react";
-import { uploadProductRequest, getProductDetail, getProductFromSeller } from "../api/products";
+import { uploadProductRequest, getProductDetail, getProductFromSeller, updateProductRequest, deleteProductRequest} from "../api/products";
 import { sellerContext} from "./SellerContext.js";
 import {jwtDecode} from 'jwt-decode';
 
@@ -88,8 +88,47 @@ export const getProductFromSellerContext = createContext();
         setProductsFromSeller([]);
      };
 
+     const updateProduct = async (productId, productData) => {
+        try {
+            const updatedProduct = await updateProductRequest(productId, productData);
+            const updatedProducts = productsFromSeller.map((product) => {
+                if (product.id === updatedProduct.id) {
+                    return updatedProduct;
+                }
+                return product;
+            });
+            setProductsFromSeller(updatedProducts);
+            return updatedProduct;
+        } catch (error) {
+            console.error("Error actualizando producto:", error);
+            return null;
+        }
+    };
+
+    const getProductById = async (productId) => {
+        try {
+            const product = await getProductDetail(productId);
+            return product;
+        } catch (error) {
+            console.error("Error obteniendo producto por ID:", error);
+            return null;
+        }
+    };
+
+    // delete product
+    const deleteProduct = async (productId) => {
+        try {
+            await deleteProductRequest(productId);
+            const updatedProducts = productsFromSeller.filter((product) => product._id !== productId);
+            setProductsFromSeller(updatedProducts);
+        } catch (error) {
+            console.error("Error eliminando producto:", error);
+        }
+    };
+ 
+
     return (
-        <getProductFromSellerContext.Provider value={{ myProducts, productsFromSeller, emptyProducts }}>
+        <getProductFromSellerContext.Provider value={{ myProducts, productsFromSeller, emptyProducts,updateProduct, getProductById,deleteProduct }}>
             {children}
         </getProductFromSellerContext.Provider>
     );
