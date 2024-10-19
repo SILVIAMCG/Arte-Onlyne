@@ -116,7 +116,7 @@ const Cart = () => {
                           </Col>
   
                           <Col md={4}>
-                            <Link to="/" className="btn btn-primary my-3">
+                            <Link to="/comprar" className="btn btn-primary my-3">
                               <strong>Ir al Pago</strong>
                             </Link>
                           </Col>

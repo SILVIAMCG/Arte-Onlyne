@@ -4,6 +4,6 @@ import { loginValidation } from "../middleware/validationMw.js";
 
 const router = express.Router();
 
-router.route('/comprar').post(loginValidation, createOrder);
+router.route('/').post(loginValidation, createOrder);
 
 export default router;
