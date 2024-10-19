@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
 import User from '../models/userModel.js';
+import Product from '../models/productModel.js';
 
 const createOrder = asyncHandler(async (req, res) => {
     const {items, nombre_completo, direccion, ciudad, comuna, telefono, costoEnvio, totalPrecio} = req.body;
@@ -15,6 +16,14 @@ const createOrder = asyncHandler(async (req, res) => {
             res.status(400).json({ message: 'Carrito vacío' });
             return;
         } else {
+
+            for (let item of items) {
+                const productExists = await Product.findById(item.idProducto);
+                if (!productExists) {
+                    return res.status(404).json({ message: `Producto no encontrado: ${item.idProducto}` });
+                }
+            }
+    
             const order = new Order({
                 items,
                 nombre_completo,

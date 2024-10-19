@@ -6,6 +6,7 @@ const port = process.env.PORT || 5000;
 import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import sellerRoutes from './routes/sellerRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';  
 import  {notFound, errorHandler} from './middleware/errorMw.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -55,6 +56,9 @@ app.use('/api/products', productRoutes);
 
 //MIS PRODUCTOS DESDE PRODUCT ROUTES
 app.use('/api/misproductos', sellerRoutes);
+
+//ORDEN DESDE ORDER ROUTES
+app.use('/api/comprar', orderRoutes);
 
 //las rutas vienen de authRoutes
 app.use('/api/authuser', authRoutes);

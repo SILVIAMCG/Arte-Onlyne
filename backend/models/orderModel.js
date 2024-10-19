@@ -8,10 +8,23 @@ const orderSchema = new mongoose.Schema(
         ref: "User",
       },
   
-      items: {
-        type: mongoose.Schema.Type.Array,
-        // { idProducto, cantidad}
-      },
+      // items: {
+      //   type: mongoose.Schema.Type.Array,
+      //   // { idProducto, cantidad}
+      // },
+      items: [
+        {
+          idProducto: {
+            type: mongoose.Schema.Types.ObjectId,  
+            ref: "Product",
+            required: false
+          },
+          cantidad: {
+            type: Number,
+            required: false
+          }
+        }
+      ],
       nombre_completo: {
         type: String,
         required: false,
