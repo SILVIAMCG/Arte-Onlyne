@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
 $primary: #9e7ce2;
 $secondary: #ffff56;
-
+$info: #ffffe0;
 
 // h1, .navbar-brand {
 //   font-family: 'Caveat', sans-serif;
@@ -39,6 +39,12 @@ h1, .navbar-brand {
 }
 
 .servicio{
+  width: 30%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.cliente{
   width: 30%;
   height: auto;
   margin: 0 auto;

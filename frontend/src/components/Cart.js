@@ -95,7 +95,7 @@ const Cart = () => {
                       </ListGroup.Item>
                     ))}
                 </ListGroup>
-                <Card className="bg-secondary">
+                <Card className="py-3">
                   <Card.Body>
                     {cart.length !== 0 ? (
                       <ListGroup variant="flush">
