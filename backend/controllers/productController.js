@@ -116,22 +116,48 @@ const createProduct = asyncHandler(async (req, res) => {
     });
 
 
-    const deleteProduct = asyncHandler(async (req, res) => {
-        try {
-            const product = await Product.findByIdAndDelete(req.params.id);
-            if (!product) {
-                res.status(404).json({ message: 'Producto no encontrado' });
-                return;
-            }
-            if (product.imagen) {
-                await deleteImage(product.imagen.public_id);
-            }
-            res.json({ message: 'Producto eliminado' });
-        } catch (error) {
-            res.status(500).json({ message: 'Error al eliminar el producto', error: error.message });
-        }
-    });
+    // const deleteProduct = asyncHandler(async (req, res) => {
+    //     try {
+    //         const product = await Product.findByIdAndDelete(req.params.id);
+    //         if (!product) {
+    //             res.status(404).json({ message: 'Producto no encontrado' });
+    //             return;
+    //         }
+    //         if (product.imagen) {
+    //             await deleteImage(product.imagen.public_id);
+    //         }
+    //         res.json({ message: 'Producto eliminado' });
+    //     } catch (error) {
+    //         res.status(500).json({ message: 'Error al eliminar el producto', error: error.message });
+    //     }
+    // });
 
+    // const deleteProduct = asyncHandler(async (productId, session = null) => {
+    //     const product = await Product.findByIdAndDelete(productId, session ? { session } : {});
+    //     if (!product) {
+    //         throw new Error('Producto no encontrado'); 
+    //     }
+    //     if (product.imagen) {
+    //         await deleteImage(product.imagen.public_id);
+    //     }
+    //     return { message: 'Producto eliminado' };
+    // });
+
+
+    const deleteProduct = asyncHandler(async (req, res) => {
+        const productId = req.params.id; // Obtener el ID desde los parámetros de la solicitud
+        const session = req.session || null; // Obtener sesión si existe
+    
+        const product = await Product.findByIdAndDelete(productId, session ? { session } : {});
+        if (!product) {
+            return res.status(404).json({ message: 'Producto no encontrado' }); 
+        }
+        if (product.imagen) {
+            await deleteImage(product.imagen.public_id);
+        }
+        
+        return res.status(200).json({ message: 'Producto eliminado' });
+    });
 
 
     const updateProduct = asyncHandler(async (req, res) => {

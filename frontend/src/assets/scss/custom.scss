@@ -12,7 +12,10 @@ $info: #ffffe0;
 
 @import '~bootstrap/scss/bootstrap.scss';
 
-
+body{
+  margin: 0;
+  padding: 0;
+}
 
 h1, .navbar-brand {
     font-family: 'Caveat', sans-serif;
@@ -97,6 +100,11 @@ footer {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.no-padding{
+  padding: 0;
+  margin: 0;
 }
 
 

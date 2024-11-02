@@ -6,7 +6,8 @@ const port = process.env.PORT || 5000;
 import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import sellerRoutes from './routes/sellerRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';  
+import orderRoutes from './routes/orderRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';  
 import  {notFound, errorHandler} from './middleware/errorMw.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -66,6 +67,9 @@ app.use('/api/login', authRoutes);
 app.use('/api/logout', authRoutes);
 app.use('/api/vender', authRoutes);
 app.use('/api/banco', authRoutes);
+
+//las rutas vienen de adminRoutes
+app.use('/api/admin', adminRoutes);
 
 //middleware para errores
 app.use(notFound);
