@@ -135,8 +135,22 @@ const authorizeSeller = async (req, res, next) => {
     }
 };
 
+//VERIFICA SI EL USUARIO ES ADMIN
+const authorizeAdmin = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user || !user.esAdmin) {
+            return res.status(401).json({ message: 'Usuario no autorizado' });
+        }
+        next();
+    }catch(error){
+        console.error("Error en authorizeAdmin:", error);
+        return res.status(500).json({ message: 'Error al autorizar usuario admin', error: error.message });
+    }
+};
+
     
         
 
 
-export { registerValidation, loginValidation, cookieVerification, verifyToken, authorizeSeller };
+export { registerValidation, loginValidation, cookieVerification, verifyToken, authorizeSeller, authorizeAdmin };

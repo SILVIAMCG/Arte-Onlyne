@@ -11,7 +11,7 @@ import fs from 'fs-extra';
 //creo una ruta para los productos
 //ruta: GET /api/products
 const getProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find({});
+    const products = await Product.find({status: "aprobado"});
     res.json(products);
 });
 

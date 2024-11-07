@@ -9,9 +9,20 @@ import {Nav,NavLink} from 'react-bootstrap';
 import {FaFacebook, FaInstagram} from 'react-icons/fa';
 import {useState, useContext, useEffect} from 'react';
 import {dataContext} from './context/DataContext';
+import { userContext } from './context/DataContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const Home = () => {
+  const { isAdmin, isLogged } = useContext(userContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+      if (isLogged && isAdmin) {
+          navigate('/admin'); // Redirige al panel de administración
+      }
+  }, [isAdmin, isLogged, navigate]);
+
     const {data: products} = useContext(dataContext);
     const [selectedCategory, setSelectedCategory] = useState('');
 

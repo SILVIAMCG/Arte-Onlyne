@@ -1,9 +1,14 @@
 import express from 'express';
 import { getUsers, deleteUser, deleteUserAndAssociations, getProducts, getPendingProducts, approveProduct,rejectProduct } from "../controllers/userAdminController.js";
 import { deleteProduct } from "../controllers/productController.js";
+import { loginValidation, authorizeAdmin } from '../middleware/validationMw.js';
+
+
 
 const router = express.Router();
 
+//RUTA PRINCIPAL DE ADMIN
+router.route('/').get(loginValidation, authorizeAdmin);
 router.route('/adminUsers').get(getUsers);
 // router.route('/:id').delete(deleteUser);
 router.route('/adminUsers/:id').delete(deleteUserAndAssociations);

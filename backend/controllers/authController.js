@@ -56,7 +56,7 @@ const login = asyncHandler(async (req, res) => {
         }
         //Se crea un token con el id del usuario y se guarda en una cookie
         //EN LA COOKIE SE AÑADIO EL CAMPO ES VENDEDOR PARA ACCEDER DESDE LA COOKIE
-        jwt.sign({ id: isUser._id, esVendedor: isUser.esVendedor}, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+        jwt.sign({ id: isUser._id, esVendedor: isUser.esVendedor, esAdmin: isUser.esAdmin}, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
             if (err) {
                 throw new Error(err);
             }

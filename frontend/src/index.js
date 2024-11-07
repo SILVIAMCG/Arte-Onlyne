@@ -36,13 +36,14 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Register />} />
 
-      <Route path="/admin" element={<AdminPanel />} />
+      
       
       <Route element={<ProtectedRoute />}>
         <Route path="/vender" element={<RegisterSeller />} />
         <Route path="/banco" element={<RegisterBank />} />
         <Route path="/misproductos" element={<ProductForm />} />
         <Route path="/comprar" element={<Order />} />
+        <Route path="/admin" element={<AdminPanel />} />
       </Route>
 
     </Route>

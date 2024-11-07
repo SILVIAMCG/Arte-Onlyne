@@ -281,6 +281,7 @@ const AdminPanel = () => {
                                 <th>Id</th>
                                 <th>Nombre</th>
                                 <th>ID Vendedor</th>    
+                                <th>Estatus</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -291,6 +292,7 @@ const AdminPanel = () => {
                                     <td>{product._id}</td>
                                     <td>{product.nombre}</td>
                                     <td>{product.usuario}</td>
+                                    <td>{product.status}</td>
                                     <td>
                                         <button className="btn btn-danger mx-3" onClick={() => handleDeleteProduct(product._id)}>Eliminar</button>
                                     </td>

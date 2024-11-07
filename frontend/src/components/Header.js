@@ -13,7 +13,7 @@ import {useNavigate} from 'react-router-dom';
 const Header = () => {
     //AQUI SE HICIERON VARIAS PRUEBAS PARA PODER CAMBIAR LA BARRA DE NAVEGACION DEPENDIENDO DE SI ESTA LOGEADO EL USUARIO
     //Y ADEMAS PARA QUE PUEDA ACCEDER AL FORMULARIO DE REGISTRO DEL VENDEDOR SI ESTA LOGEADO, Y SI NO NO
-    const { isLogged, loginUser, logoutUser, isAuthenticated, checkAuthToken } = useContext(userContext);
+    const { isLogged, loginUser, logoutUser, isAuthenticated, checkAuthToken, isAdmin } = useContext(userContext);
     const {isSeller, permitSeller} = useContext(IsSellerContext);
     const { uploadProduct } = useContext(sellProductContext);
     const { sellerInfo, isCompleted } = useContext(sellerContext);
@@ -77,6 +77,8 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
+
+            {!isAdmin && (
               <Nav.Link>
                 <Dropdown>
                   <Dropdown.Toggle id="dropdown-basic" className="pt-0">
@@ -147,6 +149,7 @@ const Header = () => {
                   )}
                 </Dropdown>
               </Nav.Link>
+            )}
               {/* Si el usuario esta logeado, se muestra cerrar sesion, si no, iniciar sesion */}
 
               {isLogged ? (
@@ -161,14 +164,16 @@ const Header = () => {
                 </LinkContainer>
               )}
 
-              {isLogged && permitSeller ? (
-                <Nav.Link onClick={handleUploadProductClick}>
-                  <FaUser /> Mis Productos
-                </Nav.Link>
-              ) : (
-                <Nav.Link onClick={handleVenderClick}>
-                  <FaUser /> Vende con nosotros
-                </Nav.Link>
+{!isAdmin && (
+                isLogged && permitSeller ? (
+                  <Nav.Link onClick={handleUploadProductClick}>
+                    <FaUser /> Mis Productos
+                  </Nav.Link>
+                ) : (
+                  <Nav.Link onClick={handleVenderClick}>
+                    <FaUser /> Vende con nosotros
+                  </Nav.Link>
+                )
               )}
             </Nav>
           </Navbar.Collapse>
