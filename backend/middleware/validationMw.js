@@ -112,6 +112,9 @@ const loginValidation = async (req, res, next) => {
         next();
     } catch (error) {
         console.error('Error al verificar el token JWT:', error.message);
+        if(error.message === 'jwt expired') {
+            return res.status(401).json({ message: 'Token expirado', error: error.message });
+        }
         return res.status(401).json({ message: 'Token inválido' });
     }
 };

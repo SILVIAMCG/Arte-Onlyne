@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Row, Col, ListGroup, Table, Button } from 'react-bootstrap';
-import { usersRequest, deleteUserAndAssociationsRequest, getProductsRequest, deleteProductRequest} from '../api/admin';
+import { usersRequest, deleteUserAndAssociationsRequest, getProductsRequest, deleteProductRequest, approveProductRequest, rejectProductRequest, getPendingProductsRequest} from '../api/admin';
 import { useState, useEffect } from 'react';
 import Select from 'react-select'; 
 import Swal from 'sweetalert2';
@@ -14,6 +14,7 @@ const AdminPanel = () => {
     const [searchProductId, setSearchProductId] = useState(null);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [pendingProducts, setPendingProducts] = useState([]);
 
     useEffect(() => {
         const getUsers = async () => {
@@ -51,7 +52,18 @@ const AdminPanel = () => {
         }
     }, [searchUserId, users]); 
 
+    const getPendingProducts = async () => {
+        try {
+            const res = await getPendingProductsRequest();
+            setPendingProducts(res);
+        } catch (error) {
+            console.error("Error al obtener productos pendientes:", error);
+        }
+    };
 
+    useEffect(() => {
+        getPendingProducts();
+    },[pendingProducts]);
 
 
     const options = users.map(user => ({
@@ -75,7 +87,7 @@ const AdminPanel = () => {
 
     const handleDelete = async (id) => {
         try {
-            const result = await showAlert();
+            const result = await showAlert('Esta acción eliminará todo lo asociado al ítem', 'Eliminar');
             if (result.isConfirmed) { 
                 await deleteUserAndAssociationsRequest(id);
                 const res = await usersRequest();
@@ -89,7 +101,7 @@ const AdminPanel = () => {
 
     const handleDeleteProduct = async (id) => {
         try {
-            const result = await showAlert();
+            const result = await showAlert('Esta acción eliminará todo lo asociado al ítem', 'Eliminar');
             if (result.isConfirmed) { 
                 await deleteProductRequest(id);
                 const res = await getProductsRequest();
@@ -101,15 +113,43 @@ const AdminPanel = () => {
         }
     };
 
-    const showAlert = () => {
+    const handleAproveProduct = async (id) => {
+
+        try {
+            const result = await showAlert('Esta acción aprobará el producto', 'Autorizar');
+            if (result.isConfirmed){
+                await approveProductRequest(id);
+                getPendingProducts();
+            }
+        } catch (error) {
+            console.error("Error al aprobar producto:", error);
+        }
+    };
+
+    const handleRejectProduct = async (id) => {
+        try {
+            const result = await showAlert('Esta acción rechazará el producto', 'Rechazar');
+            if (result.isConfirmed) {
+                await rejectProductRequest(id);
+                getPendingProducts();
+            }
+        } catch (error) {
+            console.error("Error al rechazar producto:", error);
+        }
+    };
+
+    // 'Esta acción eliminará todo lo asociado al ítem'
+
+    
+    const showAlert = (text, confirmButtonText) => {
         return Swal.fire({
             title: '¿Estás seguro?',
-            text: 'Esta acción eliminará todo lo asociado al ítem',
+            text: text,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, eliminar'
+            confirmButtonText: confirmButtonText
         });
     };
     
@@ -133,26 +173,23 @@ const AdminPanel = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Producto 1</td>
-                                <td>01/01/2021</td>
-                                <td>Vendedor 1</td>
-                                <td>
-                                    <button className="btn btn-warning mx-3">Ver</button>
-                                    <button className="btn btn-success mx-3">Autorizar</button>
-                                    <button className="btn btn-danger mx-3">Rechazar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Producto 2</td>
-                                <td>01/01/2021</td>
-                                <td>Vendedor 2</td>
-                                <td>
-                                    <button className="btn btn-warning mx-3">Ver</button>
-                                    <button className="btn btn-success mx-3">Autorizar</button>
-                                    <button className="btn btn-danger mx-3">Rechazar</button>
-                                </td>
-                            </tr>
+                            {pendingProducts.length > 0 ? (
+                                pendingProducts.map((product) => (
+                                    <tr key={product._id}>
+                                        <td>{product.nombre}</td>
+                                        <td>{product.fecha}</td>
+                                        <td>{product.usuario}</td>
+                                        <td>
+                                            <button className="btn btn-warning mx-3" onClick={() => handleAproveProduct(product._id)}>Autorizar</button>
+                                            <button className="btn btn-danger mx-3" onClick={() => handleRejectProduct(product._id)}>Rechazar</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="4" className="text-center">No hay productos pendientes</td>
+                                </tr>
+                            )}
                 
                         </tbody>
                     </Table>
@@ -273,4 +310,4 @@ const AdminPanel = () => {
   );
 };
 
-export default AdminPanel
+export default AdminPanel;

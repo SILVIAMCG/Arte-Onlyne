@@ -1,10 +1,12 @@
 import React from 'react'
 import { cartContext } from './context/CartContext';
+import { userContext} from './context/DataContext';
 import { ListGroup, Button, Row, Col, Container, Card, Image} from 'react-bootstrap';
 import { useContext, useState } from 'react';
 import { orderRequest } from './api/order.js';
 import Swal from 'sweetalert2';
 import Result from './Result';
+import { useNavigate } from 'react-router-dom';
 
 const Order = () => {
     const [resultado, setResultado] = useState(null);
@@ -14,6 +16,9 @@ const Order = () => {
         cantidadDeProductos,
         subTotal
     } = useContext(cartContext);
+
+    const { logoutUser } = useContext(userContext);
+    const navigate = useNavigate();
 
     const showAlert = ()=>{Swal.fire({
         icon: "success",
@@ -41,6 +46,12 @@ const Order = () => {
 
             const res = await orderRequest(data);
             console.log(res);
+
+            if (res && res.error === "jwt expired") {
+                logoutUser();
+                navigate("/login");
+                return;
+            };
             if (res) {
                 setResultado(res);
                 showAlert();

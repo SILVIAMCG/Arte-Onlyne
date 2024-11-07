@@ -88,7 +88,54 @@ export const deleteProductRequest = async (id) => {
     }
 };
 
+export const getPendingProductsRequest = async () => {
+    try {
+        const response = await axios.get(`${api}/admin/pendingproducts`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            console.error("Error en la respuesta:", error.response);
+        } else if (error.request) {
+            console.error("Error en la solicitud:", error.request);
+        } else {
+            console.error("Error en el manejo de la solicitud:", error.message);
+        }
+        throw error;
+    }
+}
 
+export const approveProductRequest = async (id) => {
+    try {
+        const response = await axios.put(`${api}/admin/aprovedproduct/${id}`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            console.error("Error en la respuesta:", error.response);
+        } else if (error.request) {
+            console.error("Error en la solicitud:", error.request);
+        } else {
+            console.error("Error en el manejo de la solicitud:", error.message);
+        }
+        throw error;
+    }
+};
 
-
+export const rejectProductRequest = async (id) => {
+    try {
+        const response = await axios.put(`${api}/admin/rejectedproduct/${id}`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            console.error("Error en la respuesta:", error.response);
+        } else if (error.request) {
+            console.error("Error en la solicitud:", error.request);
+        } else {
+            console.error("Error en el manejo de la solicitud:", error.message);
+        }
+        throw error;
+    }
+};
 

@@ -77,4 +77,37 @@ const getProducts = asyncHandler(async (req, res) => {
 });
 
 
-export { getUsers, deleteUser, deleteUserAndAssociations, getProducts};
+const getPendingProducts = async (req, res) => {
+    const products = await Product.find({ status: 'pendiente' });
+    res.json(products);
+};
+
+
+const approveProduct = async (req, res) => {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+        res.status(404).json({ message: 'Producto no encontrado' });
+        return;
+    }
+
+    product.status = 'aprobado';
+    await product.save();
+    res.json({ message: 'Producto aprobado' });
+};
+
+
+const rejectProduct = async (req, res) => {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+        res.status(404).json({ message: 'Producto no encontrado' });
+        return;
+    }
+
+    product.status = 'rechazado';
+    await product.save();
+    res.json({ message: 'Producto rechazado' });
+};
+
+
+
+export { getUsers, deleteUser, deleteUserAndAssociations, getProducts, approveProduct, rejectProduct, getPendingProducts };
