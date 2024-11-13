@@ -22,6 +22,7 @@ import ProductForm from './components/ProductForm';
 import Order from './components/Order.js';
 import ProtectedRoute from './utils/ProtectedRoute.js';
 import AdminPanel from './components/admin/AdminPanel.js';
+import ProtectedRouteAdmin from "./utils/ProtectedRouteAdmin.js";
 
 
 
@@ -43,7 +44,9 @@ const router = createBrowserRouter(
         <Route path="/banco" element={<RegisterBank />} />
         <Route path="/misproductos" element={<ProductForm />} />
         <Route path="/comprar" element={<Order />} />
-        <Route path="/admin" element={<AdminPanel />} />
+        <Route element={<ProtectedRouteAdmin />}>
+          <Route path="/admin" element={<AdminPanel />} />
+        </Route>
       </Route>
 
     </Route>

@@ -40,9 +40,9 @@ const FormHandle = ({data = null, closeHandle, productoToFalse}) => {
     const {updateProduct, emptyProducts} = useContext(getProductFromSellerContext);
 
     const showAlert = ()=>{Swal.fire({
-        icon: "success",
-        title: "¡Felicitaciones!",
-        text: productHandle ? "Tu producto fue actualizado" : "Tu producto ya se encuentra publicado",        
+        icon: "warning",
+        title: "En espera de aprobación",
+        text: productHandle ? "Si se aprueba, se actualizará el producto" : "Si se aprueba, tu producto será publicado",        
       });
     }
 
