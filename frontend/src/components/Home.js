@@ -30,9 +30,9 @@ const Home = () => {
       setSelectedCategory(category);
     };
 
-    const filteredProducts = products.filter((product) =>
+    const filteredProducts = products.slice().reverse().filter((product) =>
       selectedCategory ? product.categoria === selectedCategory : true
-    );
+    ).slice(0, 8);
 
     useEffect(() => {
       AOS.init({duration: 2000,

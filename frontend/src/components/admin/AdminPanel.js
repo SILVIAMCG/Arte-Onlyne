@@ -69,14 +69,14 @@ const AdminPanel = () => {
       label: user._id,
     }));
   
-    // useEffect(() => {
-    //     if (searchProductId) {
-    //         const foundProduct = products.find(product => product._id === searchProductId.value);
-    //         setFilteredProducts(foundProduct ? [foundProduct] : []);
-    //     } else {
-    //         setFilteredProducts(products.slice(-5));
-    //     }
-    // },[searchProductId, products]);
+    useEffect(() => {
+        if (searchProductId) {
+            const foundProduct = products.find(product => product._id === searchProductId.value);
+            setFilteredProducts(foundProduct ? [foundProduct] : []);
+        } else {
+            setFilteredProducts(products.slice(-5));
+        }
+    },[searchProductId, products]);
   
     const productOptions = products.map((product) => ({
       value: product._id,
@@ -218,13 +218,13 @@ const AdminPanel = () => {
                         <td>{product.usuario}</td>
                         <td>
                           <button
-                            className="btn btn-warning mx-3"
+                            className="btn btn-warning mx-3 my-2"
                             onClick={() => handleAproveProduct(product._id)}
                           >
                             Autorizar
                           </button>
                           <button
-                            className="btn btn-danger mx-3"
+                            className="btn btn-danger mx-3 my-2"
                             onClick={() => handleRejectProduct(product._id)}
                           >
                             Rechazar

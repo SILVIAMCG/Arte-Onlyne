@@ -26,7 +26,7 @@ const App = () => {
        
       </Container>
     </main>
-    <Footer />
+    {/* <Footer /> */}
     </SellProductProvider>
     </GetProductFromSellerProvider>
     </IsSellerProvider>    
@@ -35,6 +35,7 @@ const App = () => {
     </CartProvider>
   </GetProductDetailProvider>
   </DataProvider> 
+  <Footer />
   </>    
   )
 }
