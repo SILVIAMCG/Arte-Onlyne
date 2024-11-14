@@ -36,6 +36,12 @@ const createOrder = asyncHandler(async (req, res) => {
                 usuario: user._id
             });
             const createdOrder = await order.save();
+            
+            for (let item of items) {
+                const product = await Product.findById(item.idProducto);
+                product.stock = product.stock - item.cantidad;
+                await product.save();
+            }
             res.status(201).json(createdOrder);
         }
     } catch (error) {
