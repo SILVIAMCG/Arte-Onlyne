@@ -3,7 +3,7 @@ import axios from 'axios';
 const port = process.env.PORT || 5000;
 const api= `http://localhost:${port}/api`;
 
-//PRUEBA PARA MOSTRAR PRODUCTOS
+//Obtiene el detalle de un producto
 export const getProductDetail = async (id) => {
     try {
         //se hace la llamada a la api con el id del producto
@@ -15,6 +15,7 @@ export const getProductDetail = async (id) => {
     }
 };
 
+//obtiene los productos de un vendedor específico, que se verifica en el token
 export const getProductFromSeller = async () => {
     const token = localStorage.getItem('token');
     try {
@@ -31,7 +32,7 @@ export const getProductFromSeller = async () => {
     }};
 
 
-//NUEVO UPLOAD PRODUCT FUNCIONAL 
+//subir producto, los almacena en un formData
 export const uploadProductRequest = async (productData) => {
     const formData = new FormData();
     for (const key in productData) {
@@ -52,6 +53,7 @@ export const uploadProductRequest = async (productData) => {
     }
 };
 
+//actualiza producto
 export const updateProductRequest = async (id, productData) => {
     const token = localStorage.getItem('token');
     try {

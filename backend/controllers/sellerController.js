@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import Seller from '../models/sellerModel.js';
 import User from '../models/userModel.js';
 import SellerBank from '../models/sellerBankModel.js';
+import generateToken from '../utils/tokenGenerator.js';
 
 
 
@@ -25,7 +26,6 @@ const saveSellerDataTemp = asyncHandler(async (req, res) => {
             res.status(400).json({ message: 'Usuario no registrado' });
             return;
         }
-
         const rutExists = await Seller.findOne({ rut });
         if (rutExists) {
             res.status(400).json({ message: 'El RUT ya está registrado' });
@@ -42,20 +42,16 @@ const saveSellerDataTemp = asyncHandler(async (req, res) => {
             telefono,
             datosBancarios: []
         } 
-
-   
-
         const token = jwt.sign(userDataTemp, process.env.JWT_SECRET);
 
         //SE GUARDA EL OBJETO EN UNA COOKIE, ESTO SE HACE PARA QUE LOS DATOS TEMPORALES NO SE PIERDAN
         res.cookie('userDataTemp', token, { httpOnly: true, secure: false});
         return res.status(200).json({ message: 'Datos guardados temporalmente', userDataTemp,token});
         
-        }catch(error){
-            res.status(400).json({ message: "error al registrar temporalmente al usuario",error: error.message });
+    }catch(error){
+        res.status(400).json({ message: "error al registrar temporalmente al usuario",error: error.message });
     
         }
-
     });
 
 
@@ -70,12 +66,10 @@ const registerSellerBank = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'Usuario no ha completado su info' });
         }
         //SE VERIFICA EL TOKEN
-        const tempSellerData = jwt.verify(token, process.env.JWT_SECRET);
-        
+        const tempSellerData = jwt.verify(token, process.env.JWT_SECRET);        
         if (!tempSellerData) {
             return res.status(400).json({ message: 'Información temporal no encontrada o inválida' });
         }
-
         //SE CREA UN OBJETO CON LOS DATOS BANCARIOS DEL VENDEDOR
         const newBankDetails = new SellerBank({
             vendedor: tempSellerData.usuario,
@@ -87,12 +81,12 @@ const registerSellerBank = asyncHandler(async (req, res) => {
         });
 
         //SE DEBE IMPLEMENTAR LA LOGICA DE VERIFICACION DE DATOS BANCARIOS, SE HARA MAS ADELANTE
+        //YA QUE NO ES PARTE DE ESTA ETAPA DEL PROYECTO
 
         //Se guardan los datos bancarios
         const bankDetailsSaved = await newBankDetails.save();
         bankDetailsSaved.verificado = true;
         await bankDetailsSaved.save();
-
         
         //SE CREA UN OBJETO CON LOS DATOS DEL VENDEDOR
         const newSeller = new Seller({
@@ -112,11 +106,15 @@ const registerSellerBank = asyncHandler(async (req, res) => {
         user.esVendedor = true;
         await user.save();
         
+        //SE GENERA EL TOKEN PARA QUE EL VENDEDOR ACCEDA INMEDIATAMENTE A LA OPCION DE VENTA UNA VEZ REGISTRADO
+        const sellerToken = await generateToken(user._id, user.esVendedor, user.esAdmin); 
+       //SE ELIMINAN LOS DATOS TEMPORALES
         res.clearCookie('userDataTemp');
         //devuelve los datos
         return res.json({
             seller: sellerSaved,
-            bankDetails: bankDetailsSaved
+            bankDetails: bankDetailsSaved,
+            token: sellerToken
         });
     } catch (error) {
         console.error("Error en registerSellerBank:", error);
@@ -124,8 +122,8 @@ const registerSellerBank = asyncHandler(async (req, res) => {
     }
 });
 
+
 //FUNCION PARA VENDER PRODUCTOS, SE DEBE HABER REGISTRADO LOS DATOS BANCARIOS
-//NUEVO ENFOQUE CON USUARIO ES VENDEDOR
 const sellProducts = asyncHandler(async (req, res) => {
     try {
         // Verifica si req.user está definido
@@ -140,34 +138,12 @@ const sellProducts = asyncHandler(async (req, res) => {
         if (!user || !user.esVendedor) {
             return res.status(400).json({ message: 'No autorizado: Usuario no es vendedor' });
         }
-
-        console.log('Ya puedes vender tus productos');
         return res.json({ message: 'Acceso concedido' }); // Puedes devolver lo que necesites aquí
     } catch (error) {
         console.error("Error en sellProducts:", error);
         return res.status(500).json({ message: 'Error al vender productos', error: error.message });
     }
 });
-
-
-//PARA VERIFICAR SI EL USUARIO ES VENDEDOR, NO SE ESTA USANDO
-
-// const authorizeSeller = asyncHandler(async (req, res, next) => {
-//     try{
-//         const user = await User.findById(req.user._id);
-//         if(!user && !user.esVendedor){       
-//             return res.status(401).json({ message: 'Usuario no autorizado' });
-//         }            
-//         return res.status(200).json({ message: 'Usuario autorizado' });
-
-//     } catch (error) {
-//         console.error("Error en authorizeSeller:", error);
-//         return res.status(500).json({ message: 'Error al autorizar usuario vendedor', error: error.message });
-//     } 
-// });
-    
-
-
 
 
 export { saveSellerDataTemp, registerSellerBank, sellProducts};

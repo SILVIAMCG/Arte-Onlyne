@@ -7,11 +7,7 @@ const orderSchema = new mongoose.Schema(
         required: true,
         ref: "User",
       },
-  
-      // items: {
-      //   type: mongoose.Schema.Type.Array,
-      //   // { idProducto, cantidad}
-      // },
+    
       items: [
         {
           idProducto: {
@@ -25,10 +21,12 @@ const orderSchema = new mongoose.Schema(
           }
         }
       ],
+
       nombre_completo: {
         type: String,
         required: false,
       },
+
       direccion: {
         type: String,
         required: false,
@@ -48,6 +46,7 @@ const orderSchema = new mongoose.Schema(
         type: String,
         required: false,
       },
+
       costoEnvio: {
         type: Number,
         required: true,
@@ -65,34 +64,18 @@ const orderSchema = new mongoose.Schema(
         required: true,
         default: false,
       },
+
       estaEntregado: {
         type: Boolean,
         required: true,
         default: false,
       },
+
       fechaEntrega: {
         type: Date,
         required: false,
-      },
-    //   monto: {
-    //       type: Number,
-    //       required: true
-    //   },
-    //   descripcion: {
-    //       type: String,
-    //       required: true
-    //   },
-    //   id_metodo_pago: {
-    //       type: String,
-    //       required: true
-    //   },
-    //   clienteEmail: {
-    //       type: String,
-    //       required: true
-    //   },
-    //   id_transaccion: {
-    //       type: String
-    //   },
+      },  
+        
       estado: {
           type: String,
           default: "pendiente"

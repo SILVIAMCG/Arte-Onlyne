@@ -117,6 +117,11 @@ export const UserProvider = ({ children }) => {
         }
     };
 
+    const updateToken = (token) => {
+        localStorage.setItem('token', token);
+        setToken(token);
+    }
+
     //FUNCION PARA CERRAR SESION
     const logoutUser = async () => {
         try {
@@ -141,7 +146,7 @@ export const UserProvider = ({ children }) => {
 
     return (
         //ESTE CONTEXT SE USA EN INDEX.JS
-        <userContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, isLogged, setIsLogged, fetchUser, loginUser, logoutUser,token, checkAuthToken, isAdmin}}>
+        <userContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, isLogged, setIsLogged, fetchUser, loginUser, logoutUser,token, checkAuthToken, isAdmin, updateToken}}>
             {children}
         </userContext.Provider>
     );

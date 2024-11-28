@@ -7,12 +7,9 @@ const api= `http://localhost:${port}/api`;
 //ESTA FUNCION ES PARA HACER LA SOLICITUD DE LA RUTA PARA EL FORMULARIO DE VENDEDOR, PARA EL QUE GUARDA LOS DATOS
 //TEMPORALES EN UNA COOKIE. Se usara en el context sellerContext
 export const sellerRequest = async (data) => {
-    //verifico si recibe los datos
-    console.log("Data from sellerRequest:", data);
     try {
         //recibe el token
         const token = localStorage.getItem('token');
-        console.log("token desde seller request",token);
         //hace la solicitud a la ruta
         const response = await axios.post(`${api}/authuser/vender`,data,
             {
@@ -21,15 +18,13 @@ export const sellerRequest = async (data) => {
                 Authorization: `Bearer ${token}`,
             },
         }); 
-        
-        console.log("Response from sellerRequest:", response); // Verifica la respuesta completa
         return response.data;
-    } catch (error) {
+    }catch (error) {
         if (error.response) {
-            console.error("Error en la respuesta:", error.response); //este es el error que aparece al intentar ingresar los datos temporales desde el cliente
-        } else if (error.request) {
+            console.error("Error en la respuesta:", error.response); 
+        }else if (error.request) {
             console.error("Error en la solicitud:", error.request);
-        } else {
+        }else {
             console.error("Error en el manejo de la solicitud:", error.message);
         }
         throw error;
@@ -38,10 +33,8 @@ export const sellerRequest = async (data) => {
 
 //esta funcion es para hacer la solicitud de la ruta para el formulario de datos bancarios del vendedor
 export const sellerBankRequest = async (data) => {
-    console.log("Data from sellerBankRequest:", data);
     try {
         const token = localStorage.getItem('token');
-        console.log("token desde sellerBankRequest",token);
         const response = await axios.post(`${api}/authuser/banco`,data,
             {
             headers: {
@@ -49,9 +42,8 @@ export const sellerBankRequest = async (data) => {
             },
             withCredentials: true,
         }); 
-        console.log("Response from sellerBankRequest:", response); // Verifica la respuesta completa
         return response.data;
-    } catch (error) {
+    }catch (error) {
         console.error("Error en la solicitud del banco del vendedor:", error);
         throw error;
     }

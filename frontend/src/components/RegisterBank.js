@@ -5,6 +5,7 @@ import { useContext, useState, useEffect } from 'react';
 import {useForm} from 'react-hook-form';
 import {sellerContext} from './context/SellerContext.js';
 import Swal from 'sweetalert2';
+import { userContext } from './context/DataContext.js';
 
 //ESTE FORMULARIO SOLO DEBE SER ACCESIBLE CUANDO EL USUARIO LLENE SUS DATOS PERSONALES DE VENDEDOR
 //Y HAYA PASADO LAS VALIDACIONES DE REGISTERSELLER
@@ -13,6 +14,7 @@ const RegisterBank = () => {
 
     const navigate = useNavigate();
     const {fetchSellerBankData} = useContext(sellerContext);
+    const {updateToken} = useContext(userContext);
     const {register, handleSubmit, formState: { errors },reset} = useForm();
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -21,11 +23,11 @@ const RegisterBank = () => {
         try{
             const res = await fetchSellerBankData(data);
             if (res){
-                console.log("datos desde formulario",res);
                 showAlert();
-                navigate('/');
+                updateToken(res.token);
                 reset();
                 setErrorMessage('');
+                window.location.replace('/');
             }
         }catch (error){
             console.error("Error registrando datos bancarios desde el form:", error);

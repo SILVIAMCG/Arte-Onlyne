@@ -4,6 +4,7 @@ dotenv.config();
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import generateToken from '../utils/tokenGenerator.js';
 
 
 //FUNCION PARA REGISTRAR A LOS USUARIOS
@@ -54,24 +55,23 @@ const login = asyncHandler(async (req, res) => {
             res.status(400).json({ message: 'Usuario o contraseña incorrecto' });
             return;
         }
-        //Se crea un token con el id del usuario y se guarda en una cookie
-        //EN LA COOKIE SE AÑADIO EL CAMPO ES VENDEDOR PARA ACCEDER DESDE LA COOKIE
-        jwt.sign({ id: isUser._id, esVendedor: isUser.esVendedor, esAdmin: isUser.esAdmin}, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
-            if (err) {
-                throw new Error(err);
-            }
-            res.cookie('token', token, {
-                httpOnly: true,
 
-            });
-            res.status(200).json({ token, user: isUser });
-        });
-        
-       }catch (error) {
-            res.status(400).json({ message: error.message });
-            clearCookie();
+        //esta funcion viene de utils
+        const token = await generateToken(isUser._id, isUser.esVendedor, isUser.esAdmin);
+        if (!token) {
+            res.status(400).json({ message: 'No se pudo generar el token' });
+            return;
         }
+        res.cookie('token', token, {
+            httpOnly: true,
+        });
+        res.status(200).json({ token, user: isUser });        
+    }catch(error) {
+        res.status(500).json({ message: error.message });
+        clearCookie();
+    }
 });
+
 
 //FUNCION PARA CERRAR SESION
 const logout = asyncHandler(async (req, res) => {
@@ -80,21 +80,7 @@ const logout = asyncHandler(async (req, res) => {
         expires: new Date(0),
     });
     res.json({ message: 'Logged out' });
-
-
 });
-
-//ESTA FUNCION NO SE ESTA USANDO
-// const profile = asyncHandler(async(req,res) => {
-//     const user = await User.findById(req.user.id).select('-password');
-//     if (!user) {
-//         res.status(404).json({ message: 'Usuario no encontrado' });
-//         return;
-//     }
-//     return res.json(user);
-
-// });
-
 
 
 export { register, login, logout};

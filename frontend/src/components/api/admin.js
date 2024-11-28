@@ -3,10 +3,10 @@ import axios from "axios";
 const port = process.env.PORT || 5000;
 const api= `http://localhost:${port}/api`;
 
+//Obtiene la lista de usuarios
 export const usersRequest = async () => {
     try {
         const response = await axios.get(`${api}/admin/adminUsers`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -20,10 +20,10 @@ export const usersRequest = async () => {
     }
 };
 
+//eliminar usuario
 export const deleteUserRequest = async (id) => {
     try {
         const response = await axios.delete(`${api}/admin/${id}`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -37,10 +37,10 @@ export const deleteUserRequest = async (id) => {
     }
 };
 
+//elimina al usuario cuando es vendedor, y tiene sus datos bancarios y productos en diferentes colecciones, las elimina de todas
 export const deleteUserAndAssociationsRequest = async (id) => {
     try {
         const response = await axios.delete(`${api}/admin/adminUsers/${id}`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -54,10 +54,10 @@ export const deleteUserAndAssociationsRequest = async (id) => {
     }
 };
 
+//obtiene lista de productos
 export const getProductsRequest = async () => {
     try {
         const response = await axios.get(`${api}/admin/adminProducts`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -71,10 +71,10 @@ export const getProductsRequest = async () => {
     }
 };
 
+//elimina un producto
 export const deleteProductRequest = async (id) => {
     try {
         const response = await axios.delete(`${api}/admin/adminProducts/${id}`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -88,10 +88,10 @@ export const deleteProductRequest = async (id) => {
     }
 };
 
+//obtiene los productos pendientes por aprobar
 export const getPendingProductsRequest = async () => {
     try {
         const response = await axios.get(`${api}/admin/pendingproducts`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -108,7 +108,6 @@ export const getPendingProductsRequest = async () => {
 export const approveProductRequest = async (id) => {
     try {
         const response = await axios.put(`${api}/admin/aprovedproduct/${id}`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -125,7 +124,6 @@ export const approveProductRequest = async (id) => {
 export const rejectProductRequest = async (id) => {
     try {
         const response = await axios.put(`${api}/admin/rejectedproduct/${id}`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         if (error.response) {

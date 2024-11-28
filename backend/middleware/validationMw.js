@@ -11,7 +11,6 @@ const cookieVerification = (req, res, next) => {
     console.log('Cookies:', req.cookies); //prueba para ver si recibe alguna cookie
     const userDataTemp = req.cookies.userDataTemp; //se guarda la cookie en una variable
     console.log('userDataTemp:', userDataTemp); //se muestra en consola
-
     if (userDataTemp) {
         try {
             const decodedData = jwt.verify(userDataTemp, process.env.JWT_SECRET); //se decodifica la cookie
@@ -25,15 +24,13 @@ const cookieVerification = (req, res, next) => {
         //este es el error que da al ingresar los datos temporales desde el front end, en postman si funciona
         return res.status(401).json({ message: 'No token provided desde cookie verification', userDataTemp });
     }
-
     next();
 };
-//FIN PRUEBA
+
 
 //FUNCION PARA VERIFICAR EL TOKEN
 const verifyToken = async (req, res, next) => {
     let token;
-
     // Verifica si el token está en las cookies
     if (req.cookies.token) {
         token = req.cookies.token;
@@ -43,21 +40,17 @@ const verifyToken = async (req, res, next) => {
     // Verifica si el token está en el encabezado de autorización
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
-    }
-    
+    }    
     if (!token) {
         return res.status(401).json({ message: 'No token provided desde verifyToken' });
     }
-
     try {
         //se verifica el token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.id);
-        
+        const user = await User.findById(decoded.id);        
         if (!user) {
             return res.status(401).json({ message: 'User not found' });
-        }
-        
+        }        
         req.user = user;
         next();
     } catch (error) {
@@ -85,17 +78,14 @@ const registerValidation = [
 //LOGIN VALIDATION CON BEARER
 const loginValidation = async (req, res, next) => {
     let token;
-
     // Primero verifica si el token está en las cookies
     if (req.cookies.token) {
         token = req.cookies.token;
     }
-
     // Si no hay token en las cookies, verifica el encabezado de autorización
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
     }
-
     if (!token) {
         return res.status(401).json({ message: 'No autorizado' });
     }
@@ -108,7 +98,6 @@ const loginValidation = async (req, res, next) => {
         if (!req.user) {
             return res.status(401).json({ message: 'No autorizado' });
         }
-
         next();
     } catch (error) {
         console.error('Error al verificar el token JWT:', error.message);

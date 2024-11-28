@@ -7,7 +7,6 @@ import mongoose from 'mongoose';
 import asyncHandler from 'express-async-handler';
 
 //OBTENER LISTA DE USUARIOS
-//ruta: GET /api/users
 const getUsers = asyncHandler(async (req, res) => {
     const users = await User.find({});
     res.json(users);
@@ -27,7 +26,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 
-
+//ESTO ELIMINA A UN USUARIO SI ES VENDEDOR, EL SESSION ES PARA ELIMINAR TAMBIEN LOS PRODUCTOS Y LOS DATOS BANNCARIOS
 const deleteUserAndAssociations = asyncHandler(async (req, res) => {    
     let session;
     try {
@@ -55,7 +54,6 @@ const deleteUserAndAssociations = asyncHandler(async (req, res) => {
             // Usar deleteProduct para eliminar productos y sus imágenes
             await Promise.all(products.map(product => deleteProduct(product._id, session)));
         }
-
         await session.commitTransaction();
         res.json({ message: 'Usuario y asociaciones eliminados' });
 
@@ -89,7 +87,6 @@ const approveProduct = async (req, res) => {
         res.status(404).json({ message: 'Producto no encontrado' });
         return;
     }
-
     product.status = 'aprobado';
     await product.save();
     res.json({ message: 'Producto aprobado' });
@@ -102,7 +99,6 @@ const rejectProduct = async (req, res) => {
         res.status(404).json({ message: 'Producto no encontrado' });
         return;
     }
-
     product.status = 'rechazado';
     await product.save();
     res.json({ message: 'Producto rechazado' });

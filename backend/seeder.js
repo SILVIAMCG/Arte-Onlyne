@@ -1,5 +1,5 @@
 //este archivo es para insertar los datos del archivo js a la base de datos 
-import mongoose from 'mongoose';
+
 import dotenv from 'dotenv';
 import users from './data/users.js';
 import products from './data/products.js';
