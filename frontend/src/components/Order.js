@@ -122,9 +122,6 @@ const Order = () => {
                 </Row>
             </ListGroup>
             </Container>
-            {/* formulario de datos de envío */}
-    
-            {/* <Button className = "form-button" variant="secondary" onClick={handleOrder}>Realizar orden</Button> */}
         </Container>}
         </>
       );

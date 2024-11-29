@@ -1,9 +1,6 @@
 import React from 'react'
 import {Card} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-// import Rating from './Rating';
-
-
 
 const Product = ({product}) => {
   return (    
@@ -27,14 +24,5 @@ const Product = ({product}) => {
     </Card>
   )
 }
-
-
-{/* //NO SE UTILIZA EL RATING */}
-
-            {/* <Card.Text as="div"> */}
-                {/* se importa el componente rating que contiene las estrellas y el numero de reviews */}
-                {/* <Rating value={product.rating} text={`${product.numReviews} reviews`} />
-            </Card.Text> */}
-
 
 export default Product

@@ -4,6 +4,7 @@ import CartReducer from '../reducer/CartReducer';
 
 export const cartContext = createContext();
 
+//Se eligió reducer ya que el usuario depende de la acción que ejecute se modifica el estado del carrito
 export const CartProvider = ({ children }) => {
     const [state, dispatch] = useReducer(CartReducer, { cart:  localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : []});
    

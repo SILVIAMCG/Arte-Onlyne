@@ -9,34 +9,30 @@ import {SellProductProvider, IsSellerProvider, GetProductDetailProvider, GetProd
 
 const App = () => {
   return (<>
-  <DataProvider>
-    <GetProductDetailProvider>
-    <CartProvider>
-    <UserProvider>  
-    <SellerProvider>
-    <IsSellerProvider>
-    <GetProductFromSellerProvider>
-      <SellProductProvider>
-      <Header />
-    <main className="py-3">
-      <Container>
-
-        {/* el componente Outlet es un componente especial que se utiliza como un marcador de posición para renderizar el contenido de las rutas secundarias. */}
-        <Outlet />
-       
-      </Container>
-    </main>
-    {/* <Footer /> */}
-    </SellProductProvider>
-    </GetProductFromSellerProvider>
-    </IsSellerProvider>    
-    </SellerProvider>
-    </UserProvider> 
-    </CartProvider>
-  </GetProductDetailProvider>
-  </DataProvider> 
-  <Footer />
-  </>    
+    <DataProvider>
+        <GetProductDetailProvider>
+            <CartProvider>
+                <UserProvider>  
+                    <SellerProvider>
+                        <IsSellerProvider>
+                            <GetProductFromSellerProvider>
+                                <SellProductProvider>
+                                    <Header />
+                                    <main className="py-3">
+                                    <Container>  
+                                        <Outlet />       
+                                    </Container>
+                                    </main>
+                                </SellProductProvider>
+                            </GetProductFromSellerProvider>
+                        </IsSellerProvider>    
+                    </SellerProvider>
+                </UserProvider> 
+            </CartProvider>
+        </GetProductDetailProvider>
+    </DataProvider> 
+    <Footer />
+    </>    
   )
 }
 

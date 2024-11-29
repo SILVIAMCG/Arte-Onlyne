@@ -16,7 +16,6 @@ export const DataProvider = ({ children }) => {
             try {
                 const response = await axios.get(`http://localhost:${port}/api/products`); //Aqui se puso la solicitud directamente, es la primera funcion que se hizo, las de usuario son diferentes
                 setData(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error("Error obteniendo productos:", error);
             }
@@ -60,12 +59,8 @@ export const UserProvider = ({ children }) => {
     //FUNCION PARA CHEQUEAR TOKEN
 
     const checkAuthToken = () => {
-        console.log('Funcion checkOut se ejecuta');
         const savedToken = localStorage.getItem('token');
-        console.log('Token desde context', savedToken); 
         if (savedToken) {
-            // setIsAuthenticated(true);
-            // setIsLogged(true); 
             const decoded = jwtDecode(savedToken);
             setIsAuthenticated(true);
             setIsLogged(true);
@@ -73,29 +68,7 @@ export const UserProvider = ({ children }) => {
         }
     };
     
-   
-    //FUNCION PARA EL LOGIN ANTIGUA
-    // const loginUser = async (credentials) => {
-    //     try {
-    //         const response = await loginRequest(credentials);
-    //         const data = response.data;
-    //         localStorage.setItem('token', data.token); //GUARDA EL TOKEN EN LOCALSTORAGE
-    //         setUser(data.user);
-    //         if (data.user) {
-    //             setIsLogged(true);
-    //             checkAuthToken();
-    //             return true;
-    //         }else{
-    //             throw new Error("Usuario no encontrado");
-    //         }
-    //     } catch (error) {
-    //         console.error("Error ingresando usuario:", error);
-    //         setError(error);
-    //         return false;
-    //     }
-    // };
-
-    //NUEVO LOGIN
+    //FUNCION PARA LOGEAR USUARIO
     const loginUser = async (credentials) => {
         try {
             const response = await loginRequest(credentials);
@@ -117,6 +90,7 @@ export const UserProvider = ({ children }) => {
         }
     };
 
+    //Esta funcion actualiza el token, se usa en los componentes que necesitan verificar datos amacenados en el token
     const updateToken = (token) => {
         localStorage.setItem('token', token);
         setToken(token);

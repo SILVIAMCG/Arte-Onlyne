@@ -1,19 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Col, Row, Form } from 'react-bootstrap'
 import {useForm} from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { getProductFromSellerContext, sellProductContext } from './context/ProductContext';
 import Swal from 'sweetalert2';
 
-
+//Este componente es un formulario para subir o actualizar productos, dependiendo del caso
 const FormHandle = ({data = null, closeHandle, productoToFalse}) => {
 
-    
     const [productHandle, setProductHandle] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [errorMessage, setErrorMessage] = useState('');
-
-  
+    const [errorMessage, setErrorMessage] = useState('');  
     const [nombre, setNombre ] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [precio, setPrecio] = useState("");
@@ -34,8 +30,6 @@ const FormHandle = ({data = null, closeHandle, productoToFalse}) => {
     }, [data])
 
     const {register, handleSubmit, formState: { errors },reset} = useForm();
-    const navigate = useNavigate();
-
     const { uploadProduct } = useContext(sellProductContext);
     const {updateProduct, emptyProducts} = useContext(getProductFromSellerContext);
 
@@ -50,7 +44,7 @@ const FormHandle = ({data = null, closeHandle, productoToFalse}) => {
 
         const productData = {
             ...data,
-            imagen: selectedImage // Añade la imagen al producto
+            imagen: selectedImage 
         };
 
 
@@ -90,19 +84,16 @@ const FormHandle = ({data = null, closeHandle, productoToFalse}) => {
             setErrorMessage("Error subiendo producto");
             reset();
         }
-
-
-
     };
     
         const handleImageChange = (event) => {
-            setSelectedImage(event.target.files[0]); // Guarda la imagen seleccionada
+            setSelectedImage(event.target.files[0]); 
         };
     
     
-        const handleInputChange = () => {
-            setErrorMessage(''); 
-        };
+        // const handleInputChange = () => {
+        //     setErrorMessage(''); 
+        // };
     
   return (
     <Row className="justify-content-md-center">

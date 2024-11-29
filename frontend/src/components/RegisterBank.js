@@ -1,7 +1,6 @@
 import React from 'react'
 import {Container, Row, Col, Card, Form, Button} from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {sellerContext} from './context/SellerContext.js';
 import Swal from 'sweetalert2';
@@ -12,14 +11,12 @@ import { userContext } from './context/DataContext.js';
 
 const RegisterBank = () => {
 
-    const navigate = useNavigate();
     const {fetchSellerBankData} = useContext(sellerContext);
     const {updateToken} = useContext(userContext);
     const {register, handleSubmit, formState: { errors },reset} = useForm();
     const [errorMessage, setErrorMessage] = useState('');
 
     const onSubmit = handleSubmit (async(data) => {
-        console.log("datos desde formulario antes de enviar",data);
         try{
             const res = await fetchSellerBankData(data);
             if (res){

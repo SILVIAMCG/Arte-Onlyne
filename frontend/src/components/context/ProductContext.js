@@ -1,6 +1,5 @@
-import { createContext, useEffect, useState, useContext} from "react";
+import { createContext, useState} from "react";
 import { uploadProductRequest, getProductDetail, getProductFromSeller, updateProductRequest, deleteProductRequest} from "../api/products";
-import { sellerContext} from "./SellerContext.js";
 import {jwtDecode} from 'jwt-decode';
 
 
@@ -9,23 +8,18 @@ export const sellProductContext = createContext();
 export const getProductDetailContext = createContext();
 export const getProductFromSellerContext = createContext();
 
-//SE VOLVIO A PONER EL IS SELLER COMO PROVIDER, PARA VERIFICAR AL VENDEDOR EN EL FORMULARIO DE SUBIDA DE PRODUCTOS
+//ESTO ES PARA VERIFICAR AL VENDEDOR EN EL FORMULARIO DE SUBIDA DE PRODUCTOS
  export const IsSellerProvider = ({ children }) => {
     const [permitSeller, setPermitSeller] = useState(false);    
     const isSeller = async () => {
-        const token = localStorage.getItem('token');
-        console.log("Token encontrado en product context:", token);    
+        const token = localStorage.getItem('token'); 
         if (token) {
             try {
-                const decodedToken = jwtDecode(token);
-                console.log("Token decodificado:", decodedToken);
-                
+                const decodedToken = jwtDecode(token);                
                 //ES VENDEDOR ESTA EN EL TOKEN, PARA USAR LA VERIFICACION EN OTRAS PARTES DEL CODIGO
                 if (decodedToken.esVendedor) {
-                    console.log('Puede vender');
                     setPermitSeller(true);
                 } else {
-                    console.log('No puede vender');
                     setPermitSeller(false);
                 }
             } catch (error) {
@@ -50,12 +44,11 @@ export const getProductFromSellerContext = createContext();
 
 
  export const GetProductDetailProvider = ({ children }) => {
-    //se define el estado para guardar los detalles del producto
     const [productDetail, setProductDetail] = useState(null);
-    const getOneProduct = async (id) => { //se le pasa el id
+    const getOneProduct = async (id) => { 
         try {
-            const product = await getProductDetail(id); //en la llamada a la api tambien se pide el id
-            setProductDetail(product); //se guarda el producto en el estado
+            const product = await getProductDetail(id); 
+            setProductDetail(product); 
             return product;
         } catch (error) {
             console.error("Error obteniendo detalle del producto:", error);
@@ -105,6 +98,7 @@ export const getProductFromSellerContext = createContext();
         }
     };
 
+    //Esto es para mostrar el detalle de los productos 
     const getProductById = async (productId) => {
         try {
             const product = await getProductDetail(productId);
@@ -135,14 +129,7 @@ export const getProductFromSellerContext = createContext();
  };
 
 
-
-
-
- //FIN PRUEBA
-
 export const SellProductProvider = ({ children }) => {
-
-    const {accessSeller} = useContext(sellerContext);
     const [products, setProducts] = useState([]);
     
     //SE SUBE EL PRODUCTO, RECIBE LOS DATOS DEL PRODUCTO DESDE EL FORM
@@ -150,10 +137,7 @@ export const SellProductProvider = ({ children }) => {
         try{    
             const uploadedProduct = await uploadProductRequest(productData);
             setProducts([...products, uploadedProduct]);
-            //POSIBLE SOLUCION A LA RECARGA DE PAGINA
-            //setProducts((prevProducts) => [...prevProducts, uploadedProduct]);
-            return uploadedProduct;
-            
+            return uploadedProduct;            
         } catch (error) {
             console.log("Error subiendo producto:", error);
             return null;
@@ -163,6 +147,5 @@ export const SellProductProvider = ({ children }) => {
          <sellProductContext.Provider value={{ uploadProduct}}> 
             {children}
         </sellProductContext.Provider>
-    );
-    
+    );    
 };

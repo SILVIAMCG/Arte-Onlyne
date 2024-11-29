@@ -2,53 +2,24 @@ import React from 'react'
 import {useParams} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {Row, Col, Image, ListGroup, Button, Card, Container} from 'react-bootstrap';
-// import Rating from './Rating';
 import Select from 'react-select';
-// import products from '../products';
 import {useContext, useState, useEffect} from 'react';
-import {dataContext} from './context/DataContext';
 import { getProductDetailContext } from './context/ProductContext';
 import { cartContext } from './context/CartContext';
-
-
-
 
 //este componente es la vista del detalle de los productos
  const ProductView = () => {
 
-    //TODO ESTO ERA LA FORMA ANTIGUA DE MOSTRAR EL PRODUCTO, SE CAMBIO POR EL DE ABAJO
-//     const {data: products} = useContext(dataContext);
-
-//     const handleSelect = ({value}) => {
-//     console.log(product.imagen);
-//     }
-
-    
-    //Se obtiene el id con params, se busca el producto con el id y se guarda en la variable product
-    
-    // const {id:productId} = useParams();
-    // const product = products.find(p => p._id === productId);
-    // console.log(product);
-    // const cantidad = Array.from({ length: product.stock }, (_, index) => ({
-    //     label: (index + 1).toString(),
-    //     value: (index + 1).toString()
-    // }));
-
-    //FIN FORMA ANTIGUA
-
-
-    //ESTO ES LO NUEVO
     const {dispatch} = useContext(cartContext); 
-    const { id: productId } = useParams(); // Obtén el ID del producto de los parámetros de la URL
-    const { getOneProduct, productDetail } = useContext(getProductDetailContext); // Accede al contexto
-    const [loading, setLoading] = useState(true); // Estado de carga
+    const { id: productId } = useParams(); 
+    const { getOneProduct, productDetail } = useContext(getProductDetailContext); 
+    const [loading, setLoading] = useState(true); 
     const [selectedQty, setSelectedQty] = useState(1); 
 
     useEffect(() => {
         const fetchProduct = async () => {
             setLoading(true); 
-            await getOneProduct(productId);  //se espera que se obtenga el producto
-            //setLoading(false); 
+            await getOneProduct(productId);  
         };
         //se ejecuta la funcion
         fetchProduct();
@@ -82,7 +53,6 @@ import { cartContext } from './context/CartContext';
         setSelectedQty(Number(value));
     };
 
-    //NOTA, EN EL COMPONENTE, SE CAMBIO EL PRODUCT POR PRODUCTDETAIL, YA QUE SE ESTA USANDO EL PRODUCTDETAIL
   return (
     <Container>
     <Row>
@@ -95,26 +65,13 @@ import { cartContext } from './context/CartContext';
                 <ListGroup.Item>
                     <h3>{productDetail.nombre}</h3>
                 </ListGroup.Item>
-
-                {/* NO SE UTILIZA review */}
-                {/* <ListGroup.Item>
-                    <Rating value={product.rating} text={`${product.numReviews} reviews`} />
-                </ListGroup.Item> */}
-
                 <ListGroup.Item>
                     Precio: ${productDetail.precio}
                 </ListGroup.Item>
                 <ListGroup.Item>
                     Descripción: {productDetail.descripcion}
                 </ListGroup.Item>
-                {/* <ListGroup.Item>
-                    Fabricado por: {product.creador}
-                </ListGroup.Item>
-                <ListGroup.Item>
-                    Contacto: {product.contacto}
-                </ListGroup.Item> */}
             </ListGroup>
-            {/* <Link className ="btn btn-primary my-3" to="/">Volver</Link> */}
         </Col>
 
         <Col md={3}>

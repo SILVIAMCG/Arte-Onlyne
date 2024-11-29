@@ -1,6 +1,5 @@
 import React from 'react'
-import {Container, Row, Col} from 'react-bootstrap';
-import { useState } from 'react';
+import {Container, Col} from 'react-bootstrap';
 import Select from 'react-select';
 
 const categories = [

@@ -2,7 +2,7 @@ import React from 'react'
 import {Container, Row, Col, Card, Form, Button} from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
-import {useContext, useState, useEffect} from 'react';
+import {useContext, useState} from 'react';
 import { userContext } from './context/DataContext.js';
 
 
@@ -13,7 +13,6 @@ const Login = () => {
     const {register, handleSubmit, formState: { errors },reset} = useForm();
     const [errorMessage, setErrorMessage] = useState('');
     const {loginUser} =useContext(userContext);
-
     
     const handleInputChange = () => {
         setErrorMessage(''); 
@@ -28,7 +27,6 @@ const Login = () => {
             setErrorMessage("Error iniciando sesión");
             reset();
         }
-        console.log(isLogged);
         } catch (error) {
             console.error("Error iniciando sesión:", error);
             setErrorMessage("Error iniciando sesión");
