@@ -19,6 +19,7 @@ import cors from 'cors';
 connectDB();
 //inicializo express
 const app = express();
+const client_url = process.env.CLIENT_URL;
 
 app.use(cookieParser());
 
@@ -27,14 +28,14 @@ app.use('/api', (req, res, next) => {
   if (req.path === '/' || req.path === '/api/authuser' || req.path ==='/api/authuser/logout'){
     
     cors({
-      origin: 'http://localhost:3000',
+      origin: client_url,
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       allowedHeaders: ['Authorization', 'Content-Type'],
     })(req, res, next);
   } else {
     
     cors({
-      origin: 'http://localhost:3000',
+      origin: client_url,
      credentials: true,
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
      allowedHeaders: ['Authorization', 'Content-Type'],

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const port = process.env.PORT || 5000;
-const api= `http://localhost:${port}/api`;
+const api= process.env.REACT_APP_API_URL;
 
 
 //ESTA FUNCION ES PARA HACER LA SOLICITUD DE LA RUTA PARA EL FORMULARIO DE VENDEDOR, PARA EL QUE GUARDA LOS DATOS

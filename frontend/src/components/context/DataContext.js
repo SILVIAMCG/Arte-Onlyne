@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import axios from 'axios';
 import { registerRequest, loginRequest, logoutRequest} from "../api/auth";
 import { jwtDecode } from "jwt-decode";
-const port = process.env.PORT || 5000;
+const api= process.env.REACT_APP_API_URL;
 
 export const dataContext = createContext();
 export const userContext = createContext();
@@ -14,7 +14,7 @@ export const DataProvider = ({ children }) => {
     useEffect(() => { //SE USA USE EFFECT PARA QUE SE MUESTREN AL CARGAR LA PAGINA
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:${port}/api/products`); //Aqui se puso la solicitud directamente, es la primera funcion que se hizo, las de usuario son diferentes
+                const response = await axios.get(`${api}/products`); //Aqui se puso la solicitud directamente, es la primera funcion que se hizo, las de usuario son diferentes
                 setData(response.data);
             } catch (error) {
                 console.error("Error obteniendo productos:", error);

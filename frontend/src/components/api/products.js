@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const port = process.env.PORT || 5000;
-const api= `http://localhost:${port}/api`;
+const api= process.env.REACT_APP_API_URL;
 
 //Obtiene el detalle de un producto
 export const getProductDetail = async (id) => {
