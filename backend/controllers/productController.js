@@ -128,7 +128,8 @@ const createProduct = asyncHandler(async (req, res) => {
                 descripcion: descripcion || product.descripcion,
                 precio: precio || product.precio,
                 stock: stock || product.stock,
-                imagen: product.imagen
+                imagen: product.imagen,
+                status: 'pendiente'
             };
             product = await Product.findByIdAndUpdate(req.params.id, data, { new: true });
             res.json(product);            
