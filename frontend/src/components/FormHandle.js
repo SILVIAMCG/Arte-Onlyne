@@ -124,7 +124,7 @@ const FormHandle = ({data = null, closeHandle, productoToFalse}) => {
                     >
                         <option value="">Selecciona</option>
                         <option value="Accesorios">Accesorios</option>
-                        <option value="Bisuteria">Bisutería</option>
+                        <option value="Bisutería">Bisutería</option>
                         <option value="Cuadros y Pinturas">Cuadros y Pinturas</option>
                         <option value="Decoración">Decoración</option>
                         <option value="Hogar">Hogar</option>
